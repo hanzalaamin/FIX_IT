@@ -1,0 +1,152 @@
+.LandingPage {
+	padding: 50px 20px;
+	// background-color: $mainBackgroundColor;
+	background-color: #f6f9fb;
+	display: flex;
+	// justify-content: center;
+	// align-items: center;
+}
+.Sidebar {
+	max-width: 300px;
+	width: 100%;
+}
+.twBlockParent {
+	background-color: white;
+	width: 100%;
+	font: 14px/1.4 Roboto, Helvetica, Arial, Tahoma, sans-serif;
+	font-weight: 300;
+	color: #292f33;
+	box-shadow: 0 0 4px 1px lightgray;
+	margin-bottom: 10px;
+	// border: 2px solid gray;
+	// padding: 10px;
+}
+.Avatar {
+	width: 32px;
+	height: 32px;
+}
+.timelineTweetListTweet {
+	border-top: 1px solid rgba(15, 70, 100, 0.12);
+}
+.timelineTweetListTweet:first-of-type {
+	border-top: none;
+}
+.timelineTweet {
+	position: relative;
+	padding: 10px;
+}
+.timelineTweet a,
+.timelineTweet .link {
+	color: #3b94d9;
+	text-decoration: none;
+	outline: 0;
+}
+.timelineTweet a:hover,
+.timelineTweet .link:hover {
+	color: #55acee;
+}
+.timelineTweetBrand {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+.timelineTweetAuthor {
+	position: relative;
+	margin-bottom: 2px;
+	padding-left: 40px;
+}
+.timelineTweetText {
+	// margin-left: 40px;
+	// margin-bottom: 12px;
+	margin: 10px 0 12px 40px;
+	word-wrap: break-word;
+	font-size: 16px;
+	line-height: 24px;
+	font-weight: 600;
+	color: black;
+}
+.timelineTweetText2 {
+	font-size: 16px;
+	font-weight: 400;
+	margin-left: 5px;
+}
+.timelineTweetMetadata {
+	position: absolute;
+	bottom: 12px;
+	right: 10px;
+}
+.timelineTweetActions {
+	margin: 0 0 0 40px;
+	padding: 0;
+	list-style: none;
+	border: none;
+}
+.timelineTweetAction {
+	display: inline-block;
+	font-size: 17px;
+}
+.timelineTweetAction + .timelineTweetAction {
+	margin-left: 20px;
+}
+.timelineTweetTimestamp {
+	font-size: 12px;
+	line-height: 18px;
+	color: #e1e8ed;
+	transition: color 0.2s;
+}
+.timelineTweet:hover {
+	background-color: rgba(160, 200, 220, 0.12);
+}
+.timelineTweet:hover .timelineTweetAction .Icon {
+	opacity: 1;
+}
+.timelineTweet:hover .timelineTweetTimestamp {
+	color: #667580;
+}
+.TweetAuthor {
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-wrap: normal;
+}
+.TweetAuthorLink {
+	font-weight: inherit;
+	color: inherit;
+	text-decoration: inherit;
+}
+.TweetAuthorAvatar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 32px;
+	height: 32px;
+	overflow: hidden;
+	border-radius: 4px;
+}
+.TweetAuthorName {
+	margin-top: 5px;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 18px;
+}
+.TweetAuthorScreenName {
+	margin-left: 5px;
+	font-size: 13px;
+	line-height: 18px;
+	font-weight: 300;
+	color: #8899a6;
+}
+.Icon {
+	display: inline-block;
+	width: 1em;
+	height: 1.25em;
+	background-repeat: no-repeat;
+	background-size: contain;
+	vertical-align: text-bottom;
+	opacity: 0.6;
+	transition: opacity 0.2s, background-image 0.2s;
+}
+.Icon:hover {
+	opacity: 1;
+}

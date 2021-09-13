@@ -22,7 +22,11 @@ class Complaint {
 	}
 
 	getAllComplaints() {
-		// return axios.get("/").then((res) => console.log(res));
+		return axios.get("/allcomplaints").then((res) => res.data);
+	}
+
+	deleteComplaint(id) {
+		return axios.delete("/complaint/" + id).then((res) => res.data);
 	}
 }
 

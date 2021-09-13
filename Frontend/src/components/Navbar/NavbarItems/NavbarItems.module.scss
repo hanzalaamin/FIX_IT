@@ -5,12 +5,11 @@
 	display: flex;
 	flex-flow: column;
 	align-items: center;
-	height: 100%;
+	font-family: "Montserrat", sans-serif;
 }
 
-@media (min-width: 500px) {
+@media (min-width: 768px) {
 	.NavbarItems {
-		margin-right: 20px;
 		justify-content: flex-end;
 		flex-flow: row;
 	}

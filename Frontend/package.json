@@ -3,6 +3,8 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
+		"@amcharts/amcharts4": "^4.10.22",
+		"@craco/craco": "^6.2.0",
 		"@material-ui/core": "^4.11.4",
 		"@material-ui/icons": "^4.11.2",
 		"@material-ui/lab": "^4.0.0-alpha.58",
@@ -10,18 +12,20 @@
 		"@testing-library/react": "^11.2.5",
 		"@testing-library/user-event": "^12.7.3",
 		"axios": "^0.21.1",
-		"bootstrap": "^4.6.0",
+		"chart.js": "^3.5.1",
+		"d3": "^7.0.1",
 		"node-sass": "^5.0.0",
 		"react": "^17.0.1",
+		"react-chartjs-2": "^3.0.4",
 		"react-dom": "^17.0.1",
 		"react-router-dom": "^5.2.0",
 		"react-scripts": "4.0.3",
 		"web-vitals": "^1.1.0"
 	},
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
+		"start": "craco start",
+		"build": "craco build",
+		"test": "craco test",
 		"eject": "react-scripts eject"
 	},
 	"eslintConfig": {
@@ -43,5 +47,12 @@
 		]
 	},
 	"proxy": "http://localhost:2000",
-	"secure": false
+	"secure": true,
+	"devDependencies": {
+		"@tailwindcss/forms": "^0.3.3",
+		"autoprefixer": "^9.8.6",
+		"postcss": "^7.0.36",
+		"ps-scrollbar-tailwind": "0.0.1",
+		"tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
+	}
 }

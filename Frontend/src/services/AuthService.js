@@ -1,8 +1,7 @@
 // const localhost = "http://localhost:2000";
-import axios from "axios";
+// fetch("http:/localhost:3000", {mode: cors})
 
 export default {
-	// fetch("http:/localhost:3000", {mode: cors})
 	login: (user) => {
 		return fetch(`/login`, {
 			method: "post",
@@ -12,7 +11,7 @@ export default {
 			},
 		}).then((res) => {
 			if (res.status !== 401) return res.json().then((data) => data);
-			else return { isAuthenticated: false, user: { email: "" } };
+			else return { isAuthenticated: false, user: "" };
 		});
 	},
 	register: (user) => {
@@ -27,7 +26,7 @@ export default {
 			.then((data) => data);
 	},
 	logout: () => {
-		return fetch(`/logout`)
+		return fetch("/logout")
 			.then((res) => res.json())
 			.then((data) => data);
 	},
@@ -38,7 +37,7 @@ export default {
 			if (res.status !== 401) {
 				return res.json().then((data) => data);
 			} else {
-				return { isAuthenticated: false, user: { email: "" } };
+				return { isAuthenticated: false, user: "" };
 			}
 		});
 	},

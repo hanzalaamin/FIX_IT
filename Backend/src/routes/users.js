@@ -1,98 +1,152 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
-const passportConfig = require("../config/passport");
+const passportConfig = require("../config/passport").config;
 const JWT = require("jsonwebtoken");
 const User = require("../models/user");
-const Complaint = require("../models/Complaints");
 const router = express.Router();
+require("dotenv").config();
 
-// Login
-// router.post("/login", (req, res, next) => {
-// 	const { email } = req.body;
-// 	let id = "";
-// 	User.findOne({ email: email }).then((user) => {
-// 		id = user.id;
-// 	});
-// 	passport.authenticate("local", {
-// 		session: false,
-// 		successRedirect: `/:${id}`,
-// 		failureRedirect: "/",
-// 	})(req, res, next);
-// });
+const SECRET_KEY = process.env.SECRET_KEY;
 
 const signToken = (userID) => {
 	return JWT.sign(
 		{
-			iss: "FixIt2021",
+			iss: SECRET_KEY,
 			sub: userID,
 		},
-		"FixIt2021",
+		SECRET_KEY,
 		{ expiresIn: "1h" }
 	);
 };
 
 // Login
-router.post("/login", passport.authenticate("local", { session: false }), (req, res) => {
-	if (req.isAuthenticated()) {
-		const { _id, email } = req.user;
-		const token = signToken(_id);
-		res.cookie("access_token", token, { httpOnly: true, sameSite: true });
-		res.status(200).json({ isAuthenticated: true, user: { _id, email } });
+router.post("/login", async (req, res) => {
+	const { email, password } = req.body;
+
+	if (!email && !password) {
+		res.status(400).send({ message: "Please enter all credentials", msgType: true });
+	} else if (!email) {
+		res.status(400).send({ message: "Please enter email", msgType: true });
+	} else if (!password) {
+		res.status(400).send({ message: "Please enter password", msgType: true });
+	} else {
+		const user = await User.findOne({ email: email });
+		if (!user) {
+			res.status(400).send({ message: "Invalid credentials", msgType: true });
+		} else if (user) {
+			const isPasswordMatch = await bcrypt.compare(password, user.password);
+			if (!isPasswordMatch)
+				res.status(400).send({ message: "Invalid credentials", msgType: true });
+			else {
+				const token = signToken(user._id);
+				res.cookie("access_token", token, { httpOnly: true, sameSite: "none", secure: true });
+				res.status(200).send({
+					message: "Login successfully",
+					msgType: false,
+					isAuthenticated: true,
+					user,
+				});
+			}
+		}
 	}
+	// res.status(200).send({ isAuthenticated: true });
+
+	// else {
+	// 	User.findOne({ email }, (err, user) => {
+	// 		if (!user) {
+	// 			return res.status(400).send({ message: "Email not found", msgType: true });
+	// 		} else {
+	// 			if (req.isAuthenticated()) {
+	// 				const token = signToken(_id);
+	// 				res.cookie("access_token", token, { httpOnly: true, sameSite: true });
+	// 				res.status(200).send({ isAuthenticated: true, user: { _id, email } });
+	// 			}
+	// 		}
+	// 	});
+	// }
 });
 
 // Register
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
 	const { username, email, password } = req.body;
-	// if (!username || !email || !password) {
-	// 	res.json({ message: { msgBody: "Fill all fields", msgError: true } });
-	// }
-	User.findOne({ email }, (err, user) => {
-		if (err) {
-			res.status(500).json({
-				message: { msgBody: "Error Occured", msgError: true },
-			});
-		}
-		if (user) {
-			res.status(400).json({ message: { msgBody: "Email Already Exist", msgError: true } });
+
+	let regEmail =
+		/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+	if (!username && !email && !password) {
+		res.status(400).send({ message: "Please enter all credentials", msgType: true });
+	} else if (username.length < 4) {
+		if (!username) {
+			res.status(400).send({ message: "Please enter username", msgType: true });
 		} else {
-			const newUser = new User({
-				username,
-				email,
-				password,
-			});
-			bcrypt.genSalt(10, (err, salt) => {
-				bcrypt.hash(newUser.password, salt, (err, hash) => {
-					if (err) throw err;
-					newUser.password = hash;
-					newUser
-						.save()
-						.catch((err) =>
-							res.status(500).json({ message: { msgBody: "Error occured", msgError: true } })
-						);
-				});
+			res.status(400).send({ message: "Username must be atleast 4 characters", msgType: true });
+		}
+	} else if (!email) {
+		res.status(400).send({ message: "Please enter email", msgType: true });
+	} else if (!password) {
+		res.status(400).send({ message: "Please enter password", msgType: true });
+	}
+	// } else if (!regEmail.test(email)) {
+	// 	res.status(400).send({ message: "Please enter valid email", msgType: true });
+	else if (password.length < 8 || password.length > 16) {
+		if (!password) {
+			res.status(400).send({ message: "Please enter password", msgType: true });
+		} else {
+			res.status(400).send({
+				message: "Password must be between 8 to 16 characters",
+				msgType: true,
 			});
 		}
-	});
+	} else {
+		try {
+			const email_found = await User.findOne({ email });
+			const username_found = await User.findOne({ username });
+
+			if (email_found) {
+				res.status(400).send({ message: "Email Already Exist", msgType: true });
+			} else if (username_found)
+				res.status(400).send({ message: "Username Already Exist", msgType: true });
+			else {
+				const newUser = new User({
+					username,
+					email,
+					password,
+				});
+				bcrypt.genSalt(10, (err, salt) => {
+					bcrypt.hash(newUser.password, salt, (err, hash) => {
+						if (err) throw err;
+						newUser.password = hash;
+						newUser.save((err) => {
+							if (err) {
+								res.status(500).send({
+									message: "Error occured",
+									msgType: true,
+								});
+							} else {
+								res.status(201).send({
+									message: "Account successfully created",
+									msgType: false,
+								});
+							}
+						});
+					});
+				});
+			}
+		} catch (err) {
+			res.send({ message: "Random Error occured" });
+		}
+	}
 });
 
-// Logout
-// router.get("/logout", (req, res) => {
-// 	req.logout();
-// 	// res.redirect("/");
-// });
 router.get("/logout", passport.authenticate("jwt", { session: false }), (req, res) => {
-	// req.logOut();
-	// res.clearCookie("connect.sid");
 	res.clearCookie("access_token");
-	// res.json({ msg: "logout", success: true });
-	res.json({ user: { email: "" }, success: true });
+	res.json({ message: "You logout successfully", user: "", success: true });
 });
 
 router.get("/authenticated", passport.authenticate("jwt", { session: false }), (req, res) => {
-	const { email, _id } = req.user;
-	res.status(200).json({ isAuthenticated: true, user: { email, _id } });
+	const user = req.user;
+	res.status(200).send({ isAuthenticated: true, user });
 });
 
 module.exports = router;

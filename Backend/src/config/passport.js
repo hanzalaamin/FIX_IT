@@ -3,6 +3,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const jwtStrategy = require("passport-jwt").Strategy;
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
+require("dotenv").config();
 
 const cookieExtractor = (req) => {
 	let token = null;
@@ -17,7 +18,7 @@ passport.use(
 	new jwtStrategy(
 		{
 			jwtFromRequest: cookieExtractor,
-			secretOrKey: "FixIt2021",
+			secretOrKey: process.env.SECRET_KEY,
 		},
 		(payload, done) => {
 			User.findById({ _id: payload.sub }, (err, user) => {
@@ -77,34 +78,3 @@ passport.use(
 		});
 	})
 );
-
-// passport.serializeUser((user, done) => {
-// 	done(null, user.id);
-// });
-
-// passport.deserializeUser((id, done) => {
-// 	User.findById(id, (err, user) => {
-// 		done(err, user);
-// 	});
-// });
-// };
-
-// passport.use(
-// 	new LocalStrategy((email, password, done) => {
-// 		User.findOne({ email }, (err, user) => {
-// 			// something went wrong with database;
-// 			if (err) return done(err);
-// 			// if no user exist
-// 			if (!user) return done(null, false);
-// 			bcrypt.compare(password, user.password, (err, isMatch) => {
-// 				if (err) throw err;
-
-// 				if (isMatch) {
-// 					return done(null, user, {
-// 						message: "Password incorrect",
-// 					});
-// 				}
-// 			});
-// 		});
-// 	})
-// );

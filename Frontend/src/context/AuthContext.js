@@ -1,10 +1,9 @@
 import React, { createContext, useState, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
 import AuthService from "../services/AuthService";
 
 export const AuthContext = createContext();
 
-export default ({ children }) => {
+const Auth = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -20,7 +19,7 @@ export default ({ children }) => {
 	return (
 		<div>
 			{!isLoaded ? (
-				<p>lskjd</p>
+				<p>Error</p>
 			) : (
 				<AuthContext.Provider value={{ user, setUser, isAuthenticated, setIsAuthenticated }}>
 					{children}
@@ -29,3 +28,5 @@ export default ({ children }) => {
 		</div>
 	);
 };
+
+export default Auth;

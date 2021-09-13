@@ -1,0 +1,39 @@
+.Navbar {
+	/* background-color: transparent; */
+	/* box-shadow: 0 1px 5px lightgray; */
+	width: 100%;
+	z-index: 30;
+	position: sticky;
+	top: 0;
+	/* background-color: #f2f2f2; */
+	background-color: #fff;
+	font-weight: 600;
+	box-shadow: 0 0 2rem 0 rgb(33 37 41 / 10%);
+}
+.nav {
+	width: 90%;
+	display: flex;
+	justify-content: space-between;
+	transition: all 1s ease-in-out;
+	margin: auto;
+}
+.hamburger {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+.desktopOnly {
+	display: none;
+}
+@media (min-width: 1024px) {
+	.Nav {
+		transition: all 1s ease-in-out;
+		width: 80%;
+	}
+	.hamburger {
+		display: none;
+	}
+	.desktopOnly {
+		display: block;
+	}
+}

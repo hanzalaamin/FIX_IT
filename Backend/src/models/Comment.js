@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const Comment = new Schema({
+	text: { type: String },
 	postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-	text: String,
 	createdAt: { type: Date, default: Date.now },
 });
 

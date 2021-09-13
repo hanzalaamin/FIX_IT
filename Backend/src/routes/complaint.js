@@ -4,7 +4,7 @@ const Complaint = require("../models/Complaints");
 const User = require("../models/user");
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/allcomplaints", (req, res) => {
 	Complaint.find({}, (err, complaints) => {
 		if (err) {
 			res.status(400).json({ message: { msgBody: err } });
@@ -26,13 +26,23 @@ router.get("/complaints", passport.authenticate("jwt", { session: false }), (req
 	// 		}
 	// 	});
 
-	Complaint.find({ postedBy: req.user._id }, (err, complaints) => {
-		if (err) {
-			res.status(400).json({ message: { msgBody: err } });
-		} else {
-			res.json(complaints);
-		}
-	});
+	Complaint.find({ postedBy: req.user._id })
+		.populate("comments")
+		.exec((err, complaints) => {
+			if (err) {
+				res.status(400).json({ message: { msgBody: err } });
+			} else {
+				res.json(complaints);
+			}
+		});
+
+	// Complaint.find({ postedBy: req.user._id }, (err, complaints) => {
+	// 	if (err) {
+	// 		res.status(400).json({ message: { msgBody: err } });
+	// 	} else {
+	// 		res.json(complaints);
+	// 	}
+	// });
 });
 
 // Add User Complaint

@@ -1,32 +1,31 @@
 .NavbarItem {
-	margin: 10px 0;
 	display: block;
 	width: 100%;
 	text-align: center;
-	// border: 1px solid black;
+	height: 100%;
 }
-
 .NavbarItem a {
-	font-size: 18px;
+	padding: 18px 10px;
+	font-size: 20px;
 	font-weight: 400;
 	color: black;
 	width: 100%;
-	display: block;
 }
 .NavbarItem a:hover {
 	text-decoration: none;
+	color: white;
 }
-@media (min-width: 500px) {
+.NavbarItem:hover {
+	// background-color: rgba(220, 20, 60, 0.603);
+	background-color: black;
+	// transition: background-color 1s ease-in-out;
+}
+@media (min-width: 768px) {
 	.NavbarItem {
 		margin: 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 100%;
 		width: auto;
-	}
-	.NavbarItem a {
-		height: 100%;
-		padding: 18px 10px;
 	}
 }
