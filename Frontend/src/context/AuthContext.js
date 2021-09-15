@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import AuthService from "../services/AuthService";
+import Spinner from "../components/UI/Spinner/Spinner";
 
 export const AuthContext = createContext();
 
@@ -19,7 +20,8 @@ const Auth = ({ children }) => {
 	return (
 		<div>
 			{!isLoaded ? (
-				<p>Error</p>
+				// <p>Error</p>
+				<Spinner />
 			) : (
 				<AuthContext.Provider value={{ user, setUser, isAuthenticated, setIsAuthenticated }}>
 					{children}

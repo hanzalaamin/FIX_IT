@@ -1,18 +1,18 @@
 import axios from "axios";
 
 class Complaint {
-	registerComplaint(complaintname, sector, category, description) {
+	registerComplaint(complaintTitle, sector, category, description) {
 		return axios
 			.post(
 				"complaint",
 				{
-					complaintname,
+					complaintTitle,
 					sector,
 					category,
 					description,
 				},
 				{
-					body: JSON.stringify(complaintname, sector, category, description),
+					body: JSON.stringify(complaintTitle, sector, category, description),
 				}
 			)
 			.then((res) => res.data);

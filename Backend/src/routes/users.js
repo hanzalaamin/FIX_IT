@@ -70,9 +70,10 @@ router.post("/login", async (req, res) => {
 // Register
 router.post("/register", async (req, res) => {
 	const { username, email, password } = req.body;
+	console.log(req.body);
 
-	let regEmail =
-		/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	// let regEmail =
+	// 	/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 	if (!username && !email && !password) {
 		res.status(400).send({ message: "Please enter all credentials", msgType: true });

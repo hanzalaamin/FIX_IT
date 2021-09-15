@@ -9,8 +9,6 @@ import Sidebar from "../UI/Sidebar/Sidebar";
 import AuthService from "../../services/AuthService";
 import { useHistory } from "react-router-dom";
 // import Img from "../../assets/images/03.jpg";
-import Bell from "../../assets/svgs/bell.svg";
-// import messageSquare from "../../assets/svgs/messageSquare.svg";
 
 const Navbar = (props) => {
 	const { isAuthenticated, setUser, setIsAuthenticated } = useContext(AuthContext);
@@ -61,18 +59,32 @@ const Navbar = (props) => {
 					</div>
 					<Logo />
 					<ul className="hidden md:flex items-center justify-center m-0 p-0">
-						<div className="font-medium block text-lg hover:text-blue-500 mr-6">
-							<img src={Bell} alt="" className="" />
-						</div>
-						<div className="font-medium block text-gray-600 text-lg hover:text-blue-700 mr-6 cursor-pointer">
+						<div className="font-medium block text-gray-700 text-lg hover:text-blue-700 mr-6 cursor-pointer">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
-								width="24"
-								height="24"
+								width="20"
+								height="20"
 								viewBox="0 0 24 24"
 								fill="none"
 								stroke="currentColor"
-								strokeWidth="1.5"
+								strokeWidth="2"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								className="feather feather-bell"
+							>
+								<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+								<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+							</svg>
+						</div>
+						<div className="font-medium block text-gray-700 text-lg hover:text-blue-700 mr-6 cursor-pointer">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="2"
 								strokeLinecap="round"
 								strokeLinejoin="round"
 								className="feather feather-message-square"
@@ -93,15 +105,15 @@ const Navbar = (props) => {
 								(dropDown ? "transform scale-100" : "transform scale-0")
 							}
 						>
-							<button className="block px-4 py-4 w-full text-sm capitalize hover:bg-gray-100 text-left rounded-tr-lg rounded-tl-lg">
-								your profile
+							<button className="w-full px-4 py-4 flex border-gray-300 text-left rounded-tr-lg rounded-tl-lg text-gray-500 hover:text-gray-100 hover:bg-gray-800">
+								Profile
 							</button>
-							<button className="block px-4 py-4 w-full capitalize hover:bg-gray-100 text-left">
-								settings
+							<button className="w-full px-4 py-4 flex border-gray-300 text-left text-gray-500 hover:text-gray-100 hover:bg-gray-800">
+								Settings
 							</button>
 							<button
 								onClick={onLogout}
-								className="w-full px-4 py-4 capitalize flex border-gray-300 text-left rounded-br-lg rounded-bl-lg hover:bg-gray-100"
+								className="w-full px-4 py-4 flex border-gray-300 text-left rounded-br-lg rounded-bl-lg text-gray-500 hover:text-gray-100 hover:bg-gray-800"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +134,7 @@ const Navbar = (props) => {
 									<polyline points="16 17 21 12 16 7"></polyline>
 									<line x1="21" y1="12" x2="9" y2="12"></line>
 								</svg>
-								<span className="ml-4">sign out</span>
+								<span className="ml-4">Logout</span>
 							</button>
 						</div>
 					</ul>

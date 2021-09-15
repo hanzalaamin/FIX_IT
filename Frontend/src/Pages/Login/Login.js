@@ -4,6 +4,8 @@ import AuthService from "../../services/AuthService";
 import { AuthContext } from "../../context/AuthContext";
 import img from "../../assets/images/Login Screen.jpg";
 import { Message } from "../../Messages/Message";
+// import Spinner from "../../components/UI/Spinner/Spinner";
+import "../../App.css";
 
 const Login = () => {
 	const history = useHistory();
@@ -11,6 +13,7 @@ const Login = () => {
 	const [pwdType, setPwdType] = useState(true);
 	const [iconType, setIconType] = useState(true);
 	const [message, setMessage] = useState(null);
+	const [loading, setLoading] = useState(false);
 	const authContext = useContext(AuthContext);
 
 	const inputChangeHandler = (e) => {
@@ -24,6 +27,7 @@ const Login = () => {
 
 	const Submit = (e) => {
 		e.preventDefault();
+		setLoading(true);
 		AuthService.login(user).then((data) => {
 			const { message, msgType, isAuthenticated, user } = data;
 			setMessage(<Message close={() => setMessage(null)}>{message}</Message>);
@@ -32,7 +36,7 @@ const Login = () => {
 					setUser({ ...user, email: "", password: "" });
 					authContext.setUser(user);
 					authContext.setIsAuthenticated(isAuthenticated);
-					// props.history.push("/" + _id + "/home");
+					setLoading(false);
 					history.push(`/${user.username}`);
 				}
 			}
@@ -42,7 +46,7 @@ const Login = () => {
 		<div className="w-full">
 			<div className="lg:flex">
 				<div className="w-full lg:w-2/4">
-					<img src={img} className="w-full h-96 md:h-full object-cover" />
+					<img src={img} className="w-full h-96 md:h-full object-cover" alt="login page img" />
 				</div>
 				<div className="w-full lg:w-2/4 md:h-screen border px-12 md:px-32 lg:px-28">
 					<div className="h-full py-20 md:py-20 lg:py-0 flex items-center justify-center flex-col">
@@ -55,7 +59,7 @@ const Login = () => {
 								{message ? message : null}
 								<div className="mb-6">
 									<input
-										className="w-full ring-1 ring-gray-300 rounded-lg h-20 px-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+										className="w-full ring-1 ring-gray-300 rounded-lg h-16 px-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
 										type="email"
 										name="email"
 										value={user.email}
@@ -72,7 +76,7 @@ const Login = () => {
 										></i>
 									</span>
 									<input
-										className="w-full ring-1 ring-gray-300 rounded-lg h-20 px-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+										className="w-full ring-1 ring-gray-300 rounded-lg h-16 px-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
 										type={pwdType ? "password" : "text"}
 										name="password"
 										value={user.password}
@@ -96,9 +100,10 @@ const Login = () => {
 								</div>
 								<button
 									type="submit"
-									className="bg-blue-400 hover:bg-blue-500 mb-6 h-16 rounded-lg text-white w-full font-semibold"
+									className="bg-blue-400 hover:bg-blue-500 mb-6 h-16 rounded-lg text-white w-full font-semibold flex items-center justify-center"
 								>
-									SIGN IN
+									<span className="mr-5">SIGN IN</span>
+									{loading ? <div className="w-6 h-6 rounded-full loader"></div> : null}
 								</button>
 								<p className={"text-center font-semibold "}>
 									Don't have an account?&nbsp;&nbsp;

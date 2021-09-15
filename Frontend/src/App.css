@@ -12,5 +12,10 @@
 }
 .loader {
 	border-right-color: transparent;
+	/* border-left-color: #1f2937; */
+	border-left-color: white;
+	border-top-color: white;
+	border-bottom-color: white;
+	border-width: 4px;
 	animation: loader-rotate 1s linear infinite;
 }

@@ -134,7 +134,9 @@ const Sidebar = (props) => {
 							<img src="" className="mx-auto w-20 h-20 rounded-full" alt="" />
 						</div>
 						<div className="mt-0 ml-6 text-center">
-							<span className="font-medium text-white">Ava Harper</span>
+							<span className="font-bold text-xl capitalize text-white">
+								{user.username}
+							</span>
 							{/* <button class="bg-green-500 text-white px-4 py-2 rounded-md  hover:bg-white hover:text-green-500">
 								Premium
 							</button> */}
@@ -244,7 +246,7 @@ const Sidebar = (props) => {
 										strokeWidth="1.8"
 										strokeLinecap="round"
 										strokeLinejoin="round"
-										class="feather feather-bar-chart"
+										className="feather feather-bar-chart"
 									>
 										<line x1="10" y1="20" x2="10" y2="10"></line>
 										<line x1="15" y1="20" x2="15" y2="4"></line>

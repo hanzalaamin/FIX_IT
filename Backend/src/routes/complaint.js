@@ -46,35 +46,42 @@ router.get("/complaints", passport.authenticate("jwt", { session: false }), (req
 });
 
 // Add User Complaint
-router.post("/:id/complaint", passport.authenticate("jwt", { session: false }), (req, res) => {
-	const newComplaint = new Complaint({
-		complaintname: req.body.complaintname,
-		sector: req.body.sector,
-		category: req.body.category,
-		description: req.body.description,
-		postedBy: req.params.id,
-	});
+router.post(
+	"/:id/complaint",
+	passport.authenticate("jwt", { session: false }),
+	async (req, res) => {
+		const { complaintTitle, sector, category, description } = req.body;
 
-	newComplaint.save((err) => {
-		if (err) {
-			res.status(500).json({
-				message: { msgBody: "Complaint not added", msgError: true },
-			});
-		} else {
-			req.user.complaints.push(newComplaint);
-			req.user.save((err) => {
-				if (err)
-					res.status(500).json({
-						message: { msgBody: "Error has occured", msgError: true },
-					});
-				else
-					res.status(200).json({
-						message: { msgBody: "Successfully added", msgError: false },
-					});
-			});
-		}
-	});
-});
+		const newComplaint = new Complaint({
+			complaintname: complaintTitle,
+			sector: sector,
+			category: category,
+			description: description,
+			postedBy: req.user._id,
+			username: req.user.username,
+		});
+
+		await newComplaint.save((err) => {
+			if (err) {
+				res.status(500).json({
+					message: { msgBody: "Complaint not added", msgError: true },
+				});
+			} else {
+				req.user.complaints.push(newComplaint);
+				req.user.save((err) => {
+					if (err)
+						res.status(500).json({
+							message: { msgBody: "Error has occured", msgError: true },
+						});
+					else
+						res.status(200).json({
+							message: { msgBody: "Successfully added", msgError: false },
+						});
+				});
+			}
+		});
+	}
+);
 
 // Detete Complaint
 router.delete("/complaint/:id", passport.authenticate("jwt", { session: false }), (req, res) => {

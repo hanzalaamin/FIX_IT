@@ -2,7 +2,6 @@ import React from "react";
 import { Bar } from "react-chartjs-2";
 
 const BarChart = () => {
-	// const labels = Utils.months({ count: 7 });
 	return (
 		<Bar
 			data={{
@@ -46,41 +45,6 @@ const BarChart = () => {
 						data: [3, 15, 1, 9, 17, 5],
 						backgroundColor: "#7C3A20",
 					},
-					// {
-					// 	label: "Others",
-					// 	data: [3, 15, 1, 9, 17, 5],
-					// 	backgroundColor: "#7C3A20",
-					// },
-					// {
-					// 	label: "Others",
-					// 	data: [3, 15, 1, 9, 17, 5],
-					// 	backgroundColor: "#7C3A20",
-					// },
-					// {
-					// 	label: "Others",
-					// 	data: [3, 15, 1, 9, 17, 5],
-					// 	backgroundColor: "#7C3A20",
-					// },
-					// {
-					// 	label: "Others",
-					// 	data: [3, 15, 1, 9, 17, 5],
-					// 	backgroundColor: "#7C3A20",
-					// },
-					// {
-					// 	label: "Others",
-					// 	data: [3, 15, 1, 9, 17, 5],
-					// 	backgroundColor: "#7C3A20",
-					// },
-					// {
-					// 	label: "Others",
-					// 	data: [3, 15, 1, 9, 17, 5],
-					// 	backgroundColor: "#7C3A20",
-					// },
-					// {
-					// 	label: "Others",
-					// 	data: [3, 15, 1, 9, 17, 5],
-					// 	backgroundColor: "#7C3A20",
-					// },
 				],
 			}}
 			width={600}

@@ -27,7 +27,7 @@ const Analytics = () => {
 			/>
 			<div className="w-full lg:pl-72">
 				<Navbar openSideDrawer={openSideDrawer} />
-				<div className="py-10 px-10">
+				<div className="p-10">
 					<div className="mb-8">
 						<h1 className="font-bold text-2xl text-gray-700">Analytics</h1>
 					</div>
@@ -47,10 +47,10 @@ const Analytics = () => {
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
 						<div className="grid grid-cols-2 gap-10">
-							<div className="bg-white  p-4 shadow h-40"></div>
-							<div className="bg-white  p-4 shadow h-40"></div>
-							<div className="bg-white  p-4 shadow h-40"></div>
-							<div className="bg-white  p-4 shadow h-40"></div>
+							<div className="bg-white p-4 shadow "></div>
+							<div className="bg-white p-4 shadow "></div>
+							<div className="bg-white p-4 shadow "></div>
+							<div className="bg-white p-4 shadow "></div>
 						</div>
 						<div className="bg-white  p-4 flex items-center justify-center shadow h-full">
 							<PieChart />
