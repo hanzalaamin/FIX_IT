@@ -5,9 +5,6 @@ import AuthService from "../../../services/AuthService";
 import Backdrop from "../Backdrop/Backdrop";
 import Cross from "../../../assets/svgs/cross.svg";
 import NavbarItem from "../../Navbar/NavbarItems/NavbarItem/NavbarItem";
-// import NavbarItems from "../../Navbar/NavbarItems/NavbarItems";
-// import profileImage from "../../../assets/images/03.jpg";
-// import logout from "../../../assets/svgs/logout.svg";
 
 const Sidebar = (props) => {
 	let joinClasses = "transform -translate-x-full lg:translate-x-0 transition duration-500 ease-in";
@@ -31,15 +28,6 @@ const Sidebar = (props) => {
 		<React.Fragment>
 			<Backdrop close={props.closeBackDrop} show={props.openBackDrop}></Backdrop>
 
-			{/* <ul className={classes.Items}>
-					<NavbarItem link="/">Posts</NavbarItem>
-					<NavbarItem link={"/" + _id + "/home"}>Home</NavbarItem>
-					<NavbarItem link={"/" + _id + "/complaint"}>Register Complaint</NavbarItem>
-					<NavbarItem link="/account">Account Settings</NavbarItem>
-					<button className={classes.logout} onClick={onLogout}>
-						Logout
-					</button>
-				</ul> */}
 			{!isAuthenticated ? (
 				<aside
 					className={
@@ -129,11 +117,34 @@ const Sidebar = (props) => {
 						" fixed z-40 flex flex-col bg-gray-800 w-72 h-screen px-4 text-gray-900 transition duration-500 ease-in transform"
 					}
 				>
-					<div className="flex flex-col lg:flex-row items-center justify-center py-10 border-b border-gray-300">
+					<button
+						onClick={props.closeSideDrawer}
+						className="lg:hidden absolute top-4 right-2 p-2 rounded-full text-gray-100 active:bg-gray-100 active:text-gray-800"
+					>
+						<svg
+							width="14"
+							height="14"
+							viewBox="0 0 14 14"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path
+								d="M12.3346 1.66602L1.66797 12.3327M12.3346 12.3327L1.66797 1.66602L12.3346 12.3327Z"
+								stroke="currentColor"
+								strokeWidth="2"
+								strokeLinecap="round"
+							/>
+						</svg>
+					</button>
+					<div className="flex flex-row items-center justify-center py-10 border-b border-gray-300">
 						<div>
-							<img src="" className="mx-auto w-20 h-20 rounded-full" alt="" />
+							<img
+								src="https://randomuser.me/api/portraits/women/27.jpg"
+								className="mx-aut w-20 h-20 rounded-full"
+								alt=""
+							/>
 						</div>
-						<div className="mt-0 ml-6 text-center">
+						<div className="ml-6">
 							<span className="font-bold text-xl capitalize text-white">
 								{user.username}
 							</span>

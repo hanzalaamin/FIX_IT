@@ -15,7 +15,7 @@ router.get("/allcomplaints", (req, res) => {
 });
 
 // Get User Complaint in home page
-router.get("/complaints", passport.authenticate("jwt", { session: false }), (req, res) => {
+router.get("/complaints", passport.authenticate("jwt", { session: false }), async (req, res) => {
 	// User.findById({ _id: req.user._id })
 	// 	.populate("complaints")
 	// 	.exec((err, complaints) => {
@@ -26,13 +26,13 @@ router.get("/complaints", passport.authenticate("jwt", { session: false }), (req
 	// 		}
 	// 	});
 
-	Complaint.find({ postedBy: req.user._id })
+	await Complaint.find({ postedBy: req.user._id })
 		.populate("comments")
 		.exec((err, complaints) => {
 			if (err) {
 				res.status(400).json({ message: { msgBody: err } });
 			} else {
-				res.json(complaints);
+				res.send(complaints);
 			}
 		});
 

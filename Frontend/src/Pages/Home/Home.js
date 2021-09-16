@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from "react";
 import Complaints from "../../services/Complaints";
 import { Message } from "../../Messages/Message";
-// import searchIcon from "../../assets/svgs/search.svg";
 import Img from "../../assets/images/03.jpg";
-import thumbsUp from "../../assets/svgs/thumbsUp.svg";
-import messageCircle from "../../assets/svgs/messageCircle.svg";
+// import thumbsUp from "../../assets/svgs/thumbsUp.svg";
+// import messageCircle from "../../assets/svgs/messageCircle.svg";
 import Navbar from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/UI/Sidebar/Sidebar";
-import moment from "moment";
+import { HomePageLoader } from "../../components/UI/Spinner/Spinner";
+import Modal from "../../components/UI/Modal";
+// import moment from "moment";
 
 const Home = () => {
 	const [message, setMessage] = useState(null);
 	const [complaints, setComplaints] = useState([]);
-	const [complaintLength, setComplaintLength] = useState(false);
+	const [complaintLength, setComplaintLength] = useState(0);
 	// const [anchorEl, setAnchorEl] = useState(null);
 	// const [commentValue, setComment] = useState("");
 	const [_ID, setID] = useState("");
 	const [showDrawer, setShowDrawer] = useState(false);
 	const [menu, setMenu] = useState(false);
+	const [showModal, setShowModal] = useState(false);
 
 	const openSideDrawer = () => {
 		setShowDrawer(true);
@@ -31,11 +33,16 @@ const Home = () => {
 	// }
 
 	useEffect(() => {
-		Complaints.getComplaints().then((data) => {
-			console.log(data);
-			// setComplaintLength(data.length);
-			setComplaints(data);
-		});
+		async function fetchComplaints() {
+			await Complaints.getComplaints().then((data) => {
+				// console.log(data);
+				// count = count + 1;
+				console.log(data);
+				setComplaintLength(data.length);
+				setComplaints(data);
+			});
+		}
+		fetchComplaints();
 	}, [complaintLength]);
 
 	// const comment = (id) => {
@@ -56,27 +63,28 @@ const Home = () => {
 		// Comment.registerComment(_ID, commentValue).then((data) => console.log(data));
 	};
 
-	// const openMenu = (e) => {
-	// 	setAnchorEl(e.currentTarget);
-	// };
-
-	// const closeMenu = (id) => {
-	// 	setAnchorEl(null);
-	// };
-
 	const openMenu = () => {
 		setMenu(!menu);
 	};
 
+	const closeModal = () => {
+		setShowModal(false);
+	};
+
 	const deleteComplaint = (id) => {
+		console.log(id);
 		Complaints.deleteComplaint(id).then((data) => {
 			console.log(data);
 			setMessage(<Message>{data.message.msgBody}</Message>);
-			setComplaintLength(!complaintLength);
-			// setTimeout(() => {
-			// 	window.location.reload();
-			// }, 1500);
+			setComplaintLength(complaintLength);
 		});
+		setShowModal(false);
+	};
+
+	const openModal = (value) => {
+		console.log(value);
+		setMenu(false);
+		setShowModal(true);
 	};
 
 	return (
@@ -103,8 +111,8 @@ const Home = () => {
 						</button>
 					</div>
 				</div> */}
-				<div className="flex">
-					<div className="w-2/3 border- border-r h-screen">
+				<div className="flex flex-col lg:flex-row">
+					<div className="lg:w-2/3 order-2 lg:order-1 border-r h-full">
 						<div className="py-10 px-16 relative">
 							{message ? message : null}
 							{/* <div className="w-full border shadow border-gray-200 p-4 mb-4 rounded-lg hover:shadow-lg">
@@ -148,116 +156,162 @@ const Home = () => {
 								</div>
 							</div> */}
 
-							{complaintLength.length !== 0
-								? complaints.map((data) => (
-										<div
-											key={data.id}
-											className="w-full border shadow border-gray-200 p-4 mb-4 rounded-lg hover:shadow-lg"
-										>
-											<div className="flex">
-												<img src={Img} className="w-12 h-12 rounded-full" alt="" />
-												<div className="w-full ml-4">
-													<div className=" flex justify-between items-center">
-														<div className="">
-															<h4 className="font-semibold p-0">{data.username}</h4>
-															<h4 className="text-gray-400 text-sm">
-																{new Date(data.createdAt).toUTCString()}
-															</h4>
-														</div>
-														<div className="relative">
+							{complaintLength !== 0 ? (
+								complaints.map((data) => (
+									<div
+										key={data._id}
+										className="w-full border shadow border-gray-200 p-4 mb-4 rounded-lg hover:shadow-lg"
+									>
+										<div className="flex">
+											<img src={Img} className="w-12 h-12 rounded-full" alt="" />
+											<div className="w-full ml-4">
+												<div className=" flex justify-between items-center">
+													<div className="">
+														<h4 className="font-semibold p-0">{data.username}</h4>
+														<h4 className="text-gray-400 text-sm">
+															{new Date(data.createdAt).toUTCString()}
+														</h4>
+													</div>
+													<div className="relative">
+														<button
+															className="hover:bg-gray-800 hover:text-gray-100 rounded-full p-2"
+															onClick={openMenu}
+														>
+															<svg
+																xmlns="http://www.w3.org/2000/svg"
+																width="20"
+																height="20"
+																viewBox="0 0 24 24"
+																fill="none"
+																stroke="currentColor"
+																strokeWidth="2"
+																strokeLinecap="round"
+																strokeLinejoin="round"
+																className="feather feather-more-vertical"
+															>
+																<circle cx="12" cy="12" r="1"></circle>
+																<circle cx="12" cy="5" r="1"></circle>
+																<circle cx="12" cy="19" r="1"></circle>
+															</svg>
+														</button>
+														{/* <i className="fas fa-ellipsis-v cursor-pointer"></i> */}
+														<div
+															className={
+																"absolute top-9 right-4 bg-white rounded-lg border shadow w-44 " +
+																(menu ? "block" : "hidden")
+															}
+														>
 															<button
-																className="hover:bg-gray-800 hover:text-gray-100 rounded-full p-2"
-																onClick={openMenu}
+																// onClick={() => deleteComplaint(data._id)}
+																onClick={openModal}
+																className="p-3 rounded-lg flex items-center justify-center hover:bg-gray-800 hover:text-gray-100 w-full"
 															>
 																<svg
 																	xmlns="http://www.w3.org/2000/svg"
-																	width="20"
-																	height="20"
+																	width="18"
+																	height="18"
 																	viewBox="0 0 24 24"
 																	fill="none"
 																	stroke="currentColor"
-																	strokeWidth="2"
+																	strokeWidth="1.5"
 																	strokeLinecap="round"
 																	strokeLinejoin="round"
-																	className="feather feather-more-vertical"
+																	className="feather feather-trash"
 																>
-																	<circle cx="12" cy="12" r="1"></circle>
-																	<circle cx="12" cy="5" r="1"></circle>
-																	<circle cx="12" cy="19" r="1"></circle>
+																	<polyline points="3 6 5 6 21 6"></polyline>
+																	<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
 																</svg>
+																<span className="ml-3 text-lg">Delete</span>
 															</button>
-															{/* <i className="fas fa-ellipsis-v cursor-pointer"></i> */}
-															<div
-																className={
-																	"absolute top-9 right-4 bg-white rounded-lg border shadow w-44 " +
-																	(menu ? "block" : "hidden")
-																}
-															>
-																<button
-																	onClick={() => deleteComplaint(data._id)}
-																	className="p-3 block hover:bg-gray-800 hover:text-gray-100 w-full"
-																>
-																	Delete Complaint
-																</button>
-															</div>
-														</div>
-													</div>
-													<div className="mt-2 ">
-														{/* Title */}
-														<p className="text-base font-medium pb-2 text-gray-800">
-															<span className="font-semibold">Title : </span>
-															{data.complaintname}
-														</p>
-														{/* Category */}
-														<p className="text-base font-medium pb-2 text-gray-800">
-															<span className="font-semibold">Category : </span>
-															{data.category}
-														</p>
-														{/* Area */}
-														<p className="text-base font-medium pb-2 text-gray-800">
-															<span className="font-semibold">Area : </span>
-															{data.sector}
-														</p>
-														<p className="text-base font-medium border-b pb-2 text-gray-800">
-															<span className="font-semibold">Description : </span>
-															{data.description}
-														</p>
-													</div>
-													<div className="mt-2">
-														<div className="flex justify-center items-center">
-															<div className="w-1/2 border-r bg-gray-10 flex justify-center">
-																<img src={thumbsUp} alt="" />
-															</div>
-															<div className="w-1/2 bg-gray-10 flex justify-center">
-																<img
-																	src={messageCircle}
-																	alt=""
-																	className="cursor-pointer"
-																/>
-															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-								  ))
-								: "loading"}
+										<div className="mt-2 ">
+											{/* Title */}
+											<p className="text-base font-medium pb-2 text-gray-800">
+												<span className="font-semibold">Title : </span>
+												{data.complaintname}
+											</p>
+											{/* Category */}
+											<p className="text-base font-medium pb-2 text-gray-800">
+												<span className="font-semibold">Category : </span>
+												{data.category}
+											</p>
+											{/* Area */}
+											<p className="text-base font-medium pb-2 text-gray-800">
+												<span className="font-semibold">Area : </span>
+												{data.sector}
+											</p>
+											<p className="text-base font-medium border-b pb-2 text-gray-800">
+												<span className="font-semibold">Description : </span>
+												{data.description}
+											</p>
+										</div>
+										<div className="mt-2">
+											<div className="flex justify-center items-center">
+												<div className="w-1/2 border-r flex justify-center items-center text-gray-500 cursor-pointer h-full hover:text-blue-600 border">
+													<div className="bg-red-700 h-full">
+														<svg
+															xmlns="http://www.w3.org/2000/svg"
+															width="20"
+															height="20"
+															viewBox="0 0 24 24"
+															fill="none"
+															stroke="currentColor"
+															strokeWidth="1.8"
+															strokeLinecap="round"
+															strokeLinejoin="round"
+															className="feather feather-thumbs-up"
+														>
+															<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+														</svg>
+													</div>
+													<div className="bg-blue-500">
+														<span className="ml-1 font-medium text-sm">1</span>
+													</div>
+												</div>
+												<div className="w-1/2 flex justify-center items-center text-gray-500 cursor-pointer hover:text-blue-600">
+													<span>
+														<svg
+															xmlns="http://www.w3.org/2000/svg"
+															width="20"
+															height="20"
+															viewBox="0 0 24 24"
+															fill="none"
+															stroke="currentColor"
+															strokeWidth="1.8"
+															strokeLinecap="round"
+															strokeLinejoin="round"
+															className="feather feather-message-circle"
+														>
+															<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+														</svg>
+													</span>
+												</div>
+											</div>
+										</div>
+										<Modal
+											showModal={showModal}
+											Delete={() => deleteComplaint(data._id)}
+											Cancel={closeModal}
+											cancelBackDrop={closeModal}
+										/>
+									</div>
+								))
+							) : (
+								<>
+									<HomePageLoader />
+								</>
+							)}
 						</div>
 					</div>
-					<div className="w-1/3 border- h-full">
-						<div className="pt-10 flex justify-center">
-							{/* <div className="rounded-lg w-72 h-auto flex flex-wrap border p-4 shadow">
-								<div className="rounded-full hover:bg-blue-400 hover:text-white mr-2 border py-2 px-3 mb-2">
-									<p>#water</p>
-								</div>
-								<div className="rounded-full border mb-2 py-2 px-3">
-									<p>#water</p>
-								</div>
-								<div className="rounded-full border mb-2 py-2 px-3">
-									<p>#electricity</p>
-								</div>
-							</div> */}
-							<div className="border w-80 rounded-2xl m-2">
+
+					{/* Trends */}
+					<div className="lg:w-1/3 order-1 lg:order-2 h-full">
+						<div className="pt-10 px-16 px:12 flex justify-center">
+							<div className="border w-full h-full rounded-lg shadow">
 								<h1 className="text-gray-800 text-md font-bold p-3 border-b border-dim-200">
 									What’s happening
 								</h1>

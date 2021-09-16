@@ -12,6 +12,12 @@ const Complaint = new Schema({
 			ref: "Comment",
 		},
 	],
+	votes: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Vote",
+		},
+	],
 	postedBy: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "User",

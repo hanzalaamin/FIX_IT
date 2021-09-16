@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import "./App.css";
 import Login from "./Pages/Login/Login";
 import Signup from "./Pages/Signup/Signup";
@@ -18,8 +18,8 @@ function App() {
 			{!isAuthenticated ? (
 				<Switch>
 					<Route exact path="/" component={ErrorPage404} />
-					<Route path="/login" component={Login} />
 					<Route path="/register" component={Signup} />
+					<Route path="/login" component={Login} />
 				</Switch>
 			) : (
 				<Switch>
@@ -27,7 +27,6 @@ function App() {
 					<Route path="/:username/register_complaint" component={ComplaintMenu} />
 					<Route path="/:username/settings" component={Settings} />
 					<Route path="/:username/analytics" component={Analytics} />
-					<Redirect to="/login" />
 				</Switch>
 			)}
 		</>

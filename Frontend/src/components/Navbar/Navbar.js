@@ -5,14 +5,13 @@ import { AuthContext } from "../../context/AuthContext";
 import Logo from "../UI/Logo/Logo";
 import Hamburger from "../../assets/svgs/hamburger.svg";
 import { useState } from "react";
-import Sidebar from "../UI/Sidebar/Sidebar";
 import AuthService from "../../services/AuthService";
 import { useHistory } from "react-router-dom";
+// import Sidebar from "../UI/Sidebar/Sidebar";
 // import Img from "../../assets/images/03.jpg";
 
 const Navbar = (props) => {
 	const { isAuthenticated, setUser, setIsAuthenticated } = useContext(AuthContext);
-	const [showDrawer, setShowDrawer] = useState(false);
 	const [dropDown, setDropDown] = useState(false);
 	const history = useHistory();
 
@@ -43,23 +42,23 @@ const Navbar = (props) => {
 				</>
 			) : (
 				<nav className="flex justify-between items-center px-10">
-					<div
+					<button
 						className="lg:hidden cursor-pointer active:text-gray-300  active:bg-gray-800 rounded-full p-2"
 						onClick={props.openSideDrawer}
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 32 32"
-							width="32px"
-							height="32px"
+							viewBox="0 0 30 30"
+							width="30px"
+							height="30px"
 							fill="currentColor"
 						>
 							<path d="M 4 7 L 4 9 L 28 9 L 28 7 Z M 4 15 L 4 17 L 28 17 L 28 15 Z M 4 23 L 4 25 L 28 25 L 28 23 Z" />
 						</svg>
-					</div>
+					</button>
 					<Logo />
 					<ul className="hidden md:flex items-center justify-center m-0 p-0">
-						<div className="font-medium block text-gray-700 text-lg hover:text-blue-700 mr-6 cursor-pointer">
+						<div className="font-medium block text-gray-500 text-lg hover:text-blue-600 mr-6 cursor-pointer">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="20"
@@ -76,7 +75,7 @@ const Navbar = (props) => {
 								<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
 							</svg>
 						</div>
-						<div className="font-medium block text-gray-700 text-lg hover:text-blue-700 mr-6 cursor-pointer">
+						<div className="font-medium block text-gray-500 text-lg hover:text-blue-700 mr-6 cursor-pointer">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="20"
