@@ -1,25 +1,59 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Complaints from "../../services/Complaints";
+import Comment from "../../services/Comment";
+import { AuthContext } from "../../context/AuthContext";
 import { Message } from "../../Messages/Message";
 import Img from "../../assets/images/03.jpg";
-// import thumbsUp from "../../assets/svgs/thumbsUp.svg";
-// import messageCircle from "../../assets/svgs/messageCircle.svg";
 import Navbar from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/UI/Sidebar/Sidebar";
 import { HomePageLoader } from "../../components/UI/Spinner/Spinner";
 import Modal from "../../components/UI/Modal";
-// import moment from "moment";
+import ComplaintsList from "../../components/UI/ComplaintsList";
+import { Redirect, useHistory } from "react-router";
+import axios from "axios";
 
 const Home = () => {
 	const [message, setMessage] = useState(null);
 	const [complaints, setComplaints] = useState([]);
-	const [complaintLength, setComplaintLength] = useState(0);
-	// const [anchorEl, setAnchorEl] = useState(null);
-	// const [commentValue, setComment] = useState("");
-	const [_ID, setID] = useState("");
+	// const [complaintLength, setComplaintLength] = useState(0);
+	// const [openComment, setOpenComment] = useState(false);
+	const [comment, setComment] = useState("");
+	const [ID, setID] = useState("");
 	const [showDrawer, setShowDrawer] = useState(false);
-	const [menu, setMenu] = useState(false);
-	const [showModal, setShowModal] = useState(false);
+	// const [menu, setMenu] = useState(false);
+	// const [showModal, setShowModal] = useState(false);
+	// const [time, setTime] = useState("");
+	const { user, isAuthenticated } = useContext(AuthContext);
+	let history = useHistory();
+
+	useEffect(() => {
+		// axios.get("http://localhost:3000/authenticated").then((res) => res.json());
+		// console.log();
+		if (!isAuthenticated) {
+			// <Redirect to="/login" />;
+			history.push("/login");
+		}
+	}, []);
+
+	// Fetching Complaints and call useEffect when complaintlenght changes
+	useEffect(() => {
+		Complaints.getComplaints(user._id).then((data) => {
+			console.log(data);
+			// setComplaintLength(data.length);
+			setComplaints(data);
+			// let hours = new Date(data.createdAt).getHours();
+			// let minutes = new Date(data.createdAt).getHours();
+			// console.log(minutes);
+			// let ampm = hours >= 12 ? "PM" : "AM";
+			// hours = hours % 12;
+			// hours = hours ? hours : 12;
+			// // minutes = minutes < 10 ?
+			// let Time = hours + " : " + minutes + " " + ampm;
+			// setTime(Time);
+		});
+		// }
+		console.log(complaints.length);
+	}, []);
 
 	const openSideDrawer = () => {
 		setShowDrawer(true);
@@ -28,64 +62,55 @@ const Home = () => {
 		setShowDrawer(false);
 	};
 
-	// function getID(ID) {
-	// 	return setID(ID);
-	// }
-
-	useEffect(() => {
-		async function fetchComplaints() {
-			await Complaints.getComplaints().then((data) => {
-				// console.log(data);
-				// count = count + 1;
-				console.log(data);
-				setComplaintLength(data.length);
-				setComplaints(data);
-			});
-		}
-		fetchComplaints();
-	}, [complaintLength]);
-
 	// const comment = (id) => {
-	// 	console.log(_ID);
 	// 	Comment.getComments(id).then((data) => {
 	// 		console.log(data);
 	// 	});
 	// };
 
-	const inputChangeHandler = (e) => {
-		// setComment(e.target.value);
-	};
+	// const deleteComment = (user_id, complaint_id, comment_id) => {
+	// 	console.log(user_id, complaint_id, comment_id);
+	// 	Comment.deleteComment(user_id, complaint_id, comment_id).then((data) => console.log(data));
+	// };
 
-	const submit = (e) => {
+	// const openCommentBox = (id) => {
+	// 	setOpenComment(!openComment);
+	// 	setID(id);
+	// 	console.log(ID, openComment);
+	// };
+
+	// Adding comment on Complaint
+	const submitComment = (e, complaint_id, postedBy) => {
 		e.preventDefault();
-		console.log(_ID);
-		// console.log(commentValue);
-		// Comment.registerComment(_ID, commentValue).then((data) => console.log(data));
+		Comment.registerComment(postedBy, complaint_id, comment).then((data) => console.log(data));
+		setComment("");
 	};
 
-	const openMenu = () => {
-		setMenu(!menu);
-	};
+	// const openMenu = () => {
+	// 	setMenu(!menu);
+	// };
 
-	const closeModal = () => {
-		setShowModal(false);
-	};
-
+	// Deleting Complaints by ID
 	const deleteComplaint = (id) => {
 		console.log(id);
 		Complaints.deleteComplaint(id).then((data) => {
 			console.log(data);
 			setMessage(<Message>{data.message.msgBody}</Message>);
-			setComplaintLength(complaintLength);
+			// setComplaintLength(complaintLength);
 		});
-		setShowModal(false);
+		// setShowModal(false);
 	};
 
-	const openModal = (value) => {
-		console.log(value);
-		setMenu(false);
-		setShowModal(true);
-	};
+	// Open Modal
+	// const openModal = () => {
+	// 	setMenu(false);
+	// 	setShowModal(true);
+	// };
+
+	// Close Modal
+	// const closeModal = () => {
+	// 	setShowModal(false);
+	// };
 
 	return (
 		<div className="bg-white w-full flex">
@@ -98,210 +123,269 @@ const Home = () => {
 
 			<div className="w-full lg:pl-72">
 				<Navbar openSideDrawer={openSideDrawer} />
-				{/* <div className="px-4 w-auto flex justify-center mt-8 mb-4">
-					<div className="px-4 border flex rounded-full items-center w-2/4">
-						<input
-							type="text"
-							className="
-						w-full px-3 py-3 appearence-none focus:outline-none text-md leading-tight text-gray-700 font-normal"
-							placeholder="search"
-						/>
-						<button className="cursor-pointer">
-							<img src={searchIcon} alt="" />
-						</button>
-					</div>
-				</div> */}
 				<div className="flex flex-col lg:flex-row">
-					<div className="lg:w-2/3 order-2 lg:order-1 border-r h-full">
+					<div
+						className={
+							"lg:w-2/3 order-2 lg:order-1 border-r " +
+							(complaints.length <= 1 ? "h-screen" : "h-full")
+						}
+					>
 						<div className="py-10 px-16 relative">
 							{message ? message : null}
-							{/* <div className="w-full border shadow border-gray-200 p-4 mb-4 rounded-lg hover:shadow-lg">
-								<div className="flex">
-									<img src={Img} className="w-12 h-12 rounded-full" alt="" />
-									<div className="w-full ml-4">
-										<div className=" flex justify-between items-center">
-											<div className="">
-												<h4 className="font-semibold p-0">John Doe</h4>
-												<h4 className="text-gray-400 text-sm">20 hrs ago</h4>
-											</div>
-											<div>
-												<i className="fas fa-ellipsis-v cursor-pointer"></i>
-											</div>
-										</div>
-										<div className="mt-2 ">
-											<p className="text-base font-medium border-b pb-2 text-gray-800">
-												Lorem Ipsum is simply dummy text of the printing and typesetting
-												industry. Lorem Ipsum has been the industry's standard dummy
-												text ever since the 1500s, when an unknown printer took a galley
-												of type and scrambled it to make a type specimen book. It has
-												survived not only five centuries, but also the leap into
-												electronic typesetting, remaining essentially unchanged. It was
-												popularised in the 1960s with the release of Letraset sheets
-												containing Lorem Ipsum passages, and more recently with desktop
-												publishing software like Aldus PageMaker including versions of
-												Lorem Ipsum.
-											</p>
-										</div>
-										<div className="mt-2">
-											<div className="flex justify-center items-center">
-												<div className="w-1/2 border-r bg-gray-10 flex justify-center">
-													<img src={thumbsUp} alt="" />
-												</div>
-												<div className="w-1/2 bg-gray-10 flex justify-center">
-													<img src={messageCircle} alt="" className="cursor-pointer" />
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div> */}
-
-							{complaintLength !== 0 ? (
+							{complaints.length !== 0 ? (
 								complaints.map((data) => (
-									<div
+									// <div
+									// 	key={data._id}
+									// 	className="w-full border shadow border-gray-200 p-4 mb-4 rounded-lg hover:shadow-lg"
+									// >
+									// 	<div className="flex">
+									// 		<img src={Img} className="w-12 h-12 rounded-full" alt="" />
+									// 		<div className="w-full ml-4">
+									// 			<div className=" flex justify-between items-center">
+									// 				<div className="">
+									// 					<h4 className="font-semibold p-0">{data.username}</h4>
+									// 					<h4 className="text-gray-400 text-sm">
+									// 						<span>{new Date(data.createdAt).toDateString()}</span>,
+									// 						<span>{new Date(data.createdAt).toTimeString()}</span>
+									// 					</h4>
+									// 				</div>
+									// 				<div className="relative">
+									// 					<button
+									// 						className="hover:bg-gray-800 hover:text-gray-100 rounded-full p-2"
+									// 						onClick={openMenu}
+									// 					>
+									// 						<svg
+									// 							xmlns="http://www.w3.org/2000/svg"
+									// 							width="20"
+									// 							height="20"
+									// 							viewBox="0 0 24 24"
+									// 							fill="none"
+									// 							stroke="currentColor"
+									// 							strokeWidth="2"
+									// 							strokeLinecap="round"
+									// 							strokeLinejoin="round"
+									// 							className="feather feather-more-vertical"
+									// 						>
+									// 							<circle cx="12" cy="12" r="1"></circle>
+									// 							<circle cx="12" cy="5" r="1"></circle>
+									// 							<circle cx="12" cy="19" r="1"></circle>
+									// 						</svg>
+									// 					</button>
+									// 					<div
+									// 						className={
+									// 							"absolute top-9 right-4 bg-white rounded-lg border shadow w-44 " +
+									// 							(menu ? "block" : "hidden")
+									// 						}
+									// 					>
+									// 						<button
+									// 							onClick={openModal}
+									// 							className="p-3 rounded-lg flex items-center justify-center hover:bg-gray-800 hover:text-gray-100 w-full"
+									// 						>
+									// 							<svg
+									// 								xmlns="http://www.w3.org/2000/svg"
+									// 								width="18"
+									// 								height="18"
+									// 								viewBox="0 0 24 24"
+									// 								fill="none"
+									// 								stroke="currentColor"
+									// 								strokeWidth="1.8"
+									// 								strokeLinecap="round"
+									// 								strokeLinejoin="round"
+									// 								className="feather feather-trash"
+									// 							>
+									// 								<polyline points="3 6 5 6 21 6"></polyline>
+									// 								<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+									// 							</svg>
+									// 							<span className="ml-3 text-lg">Delete</span>
+									// 						</button>
+									// 					</div>
+									// 				</div>
+									// 			</div>
+									// 		</div>
+									// 	</div>
+									// 	<div className="mt-2 ">
+									// 		{/* Title */}
+									// 		<p className="text-base font-medium pb-2 text-gray-800">
+									// 			<span className="font-semibold">Title : </span>
+									// 			{data.complaintname}
+									// 		</p>
+									// 		{/* Category */}
+									// 		<p className="text-base font-medium pb-2 text-gray-800">
+									// 			<span className="font-semibold">Category : </span>
+									// 			{data.category}
+									// 		</p>
+									// 		{/* Area */}
+									// 		<p className="text-base font-medium pb-2 text-gray-800">
+									// 			<span className="font-semibold">Area : </span>
+									// 			{data.sector}
+									// 		</p>
+									// 		<p className="text-base font-medium border-b pb-2 text-gray-800">
+									// 			<span className="font-semibold">Description : </span>
+									// 			{data.description}
+									// 		</p>
+									// 	</div>
+									// 	<div className="mt-2">
+									// 		<div className="flex justify-center items-center">
+									// 			<div className="w-1/2 border-r flex justify-center items-center text-gray-500 cursor-pointer h-full hover:text-blue-600">
+									// 				<div>
+									// 					<svg
+									// 						xmlns="http://www.w3.org/2000/svg"
+									// 						width="20"
+									// 						height="20"
+									// 						viewBox="0 0 24 24"
+									// 						fill="none"
+									// 						stroke="currentColor"
+									// 						strokeWidth="1.8"
+									// 						strokeLinecap="round"
+									// 						strokeLinejoin="round"
+									// 						className="feather feather-thumbs-up"
+									// 					>
+									// 						<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+									// 					</svg>
+									// 				</div>
+									// 				<div>
+									// 					<span className="ml-1 font-medium text-base">0</span>
+									// 				</div>
+									// 			</div>
+									// 			<div
+									// 				className="w-1/2 flex justify-center items-center text-gray-500 cursor-pointer hover:text-blue-600"
+									// 				// id={data._id}
+									// 				onClick={(e) => openCommentBox(e, data._id)}
+									// 			>
+									// 				<button>
+									// 					/* <svg
+									// 						xmlns="http://www.w3.org/2000/svg"
+									// 						width="20"
+									// 						height="20"
+									// 						viewBox="0 0 24 24"
+									// 						fill="none"
+									// 						stroke="currentColor"
+									// 						strokeWidth="1.8"
+									// 						strokeLinecap="round"
+									// 						strokeLinejoin="round"
+									// 						className="feather feather-message-circle"
+									// 					>
+									// 						<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+									// 					</svg> *
+									// 					<span className="font-medium text-base">Comments</span>
+									// 				</button>
+									// 				<div>
+									// 					<span className="ml-1 font-medium text-base">
+									// 						{data.comments.length}
+									// 					</span>
+									// 				</div>
+									// 			</div>
+									// 		</div>
+									// 	</div>
+
+									// 	{/* Comment */}
+									// 	<div
+									// 		className={
+									// 			"mt-4 " + (ID === data._id && openComment ? "block" : "hidden")
+									// 		}
+									// 	>
+									// 		<div>
+									// 			{data.comments.map((comment) => (
+									// 				<div
+									// 					className="flex items-center justify-start"
+									// 					key={comment._id}
+									// 				>
+									// 					<div className="mr-2">
+									// 						<img
+									// 							src={Img}
+									// 							className="w-9 h-9 rounded-full"
+									// 							alt=""
+									// 						/>
+									// 					</div>
+									// 					<div>
+									// 						<p className="m-0">
+									// 							<span className="text-sm font-semibold capitalize m-0">
+									// 								{comment.postedBy.username}
+									// 							</span>
+									// 							<span className="text-sm ml-2 text-gray-400">
+									// 								{new Date(data.createdAt).toUTCString()}
+									// 							</span>
+									// 						</p>
+									// 						<p className="m-0">{comment.comment}</p>
+									// 					</div>
+									// 				</div>
+									// 			))}
+									// 		</div>
+									// 		<form
+									// 			onSubmit={(e) => submitComment(e, data.postedBy)}
+									// 			className="mt-2"
+									// 		>
+									// 			<div className="flex items-center justify-start">
+									// 				<div>
+									// 					<img
+									// 						src={Img}
+									// 						className="h-9 rounded-full w-full max-w-xs"
+									// 						alt=""
+									// 					/>
+									// 				</div>
+									// 				<input
+									// 					type="text"
+									// 					className="w-full ring-1 ring-gray-300 rounded-sm px-2 text-md focus:outline-none focus:ring-1 ml-2 h-8 focus:ring-blue-400 bg-gray-100 focus:bg-white"
+									// 					name="commentText"
+									// 					placeholder="Add comment"
+									// 					value={comment}
+									// 					onChange={(e) => setComment(e.target.value)}
+									// 				/>
+									// 				<button
+									// 					type="submit"
+									// 					className="ml-2 bg-gray-800 text-gray-300 rounded-full p-1 flex items-center justify-center"
+									// 				>
+									// 					<svg
+									// 						xmlns="http://www.w3.org/2000/svg"
+									// 						width="20"
+									// 						height="20"
+									// 						viewBox="0 0 24 24"
+									// 						fill="none"
+									// 						stroke="currentColor"
+									// 						strokeWidth="1.8"
+									// 						strokeLinecap="round"
+									// 						strokeLinejoin="round"
+									// 						className="feather feather-send transform rotate-45"
+									// 					>
+									// 						<line x1="22" y1="2" x2="11" y2="12"></line>
+									// 						<polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+									// 					</svg>
+									// 				</button>
+									// 			</div>
+									// 		</form>
+									// 	</div>
+
+									// 	{/* Modal */}
+									// 	<Modal
+									// 		showModal={showModal}
+									// 		Delete={() => deleteComplaint(data._id)}
+									// 		Cancel={closeModal}
+									// 		cancelBackDrop={closeModal}
+									// 	/>
+									// </div>
+									<ComplaintsList
 										key={data._id}
-										className="w-full border shadow border-gray-200 p-4 mb-4 rounded-lg hover:shadow-lg"
-									>
-										<div className="flex">
-											<img src={Img} className="w-12 h-12 rounded-full" alt="" />
-											<div className="w-full ml-4">
-												<div className=" flex justify-between items-center">
-													<div className="">
-														<h4 className="font-semibold p-0">{data.username}</h4>
-														<h4 className="text-gray-400 text-sm">
-															{new Date(data.createdAt).toUTCString()}
-														</h4>
-													</div>
-													<div className="relative">
-														<button
-															className="hover:bg-gray-800 hover:text-gray-100 rounded-full p-2"
-															onClick={openMenu}
-														>
-															<svg
-																xmlns="http://www.w3.org/2000/svg"
-																width="20"
-																height="20"
-																viewBox="0 0 24 24"
-																fill="none"
-																stroke="currentColor"
-																strokeWidth="2"
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																className="feather feather-more-vertical"
-															>
-																<circle cx="12" cy="12" r="1"></circle>
-																<circle cx="12" cy="5" r="1"></circle>
-																<circle cx="12" cy="19" r="1"></circle>
-															</svg>
-														</button>
-														{/* <i className="fas fa-ellipsis-v cursor-pointer"></i> */}
-														<div
-															className={
-																"absolute top-9 right-4 bg-white rounded-lg border shadow w-44 " +
-																(menu ? "block" : "hidden")
-															}
-														>
-															<button
-																// onClick={() => deleteComplaint(data._id)}
-																onClick={openModal}
-																className="p-3 rounded-lg flex items-center justify-center hover:bg-gray-800 hover:text-gray-100 w-full"
-															>
-																<svg
-																	xmlns="http://www.w3.org/2000/svg"
-																	width="18"
-																	height="18"
-																	viewBox="0 0 24 24"
-																	fill="none"
-																	stroke="currentColor"
-																	strokeWidth="1.5"
-																	strokeLinecap="round"
-																	strokeLinejoin="round"
-																	className="feather feather-trash"
-																>
-																	<polyline points="3 6 5 6 21 6"></polyline>
-																	<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-																</svg>
-																<span className="ml-3 text-lg">Delete</span>
-															</button>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div className="mt-2 ">
-											{/* Title */}
-											<p className="text-base font-medium pb-2 text-gray-800">
-												<span className="font-semibold">Title : </span>
-												{data.complaintname}
-											</p>
-											{/* Category */}
-											<p className="text-base font-medium pb-2 text-gray-800">
-												<span className="font-semibold">Category : </span>
-												{data.category}
-											</p>
-											{/* Area */}
-											<p className="text-base font-medium pb-2 text-gray-800">
-												<span className="font-semibold">Area : </span>
-												{data.sector}
-											</p>
-											<p className="text-base font-medium border-b pb-2 text-gray-800">
-												<span className="font-semibold">Description : </span>
-												{data.description}
-											</p>
-										</div>
-										<div className="mt-2">
-											<div className="flex justify-center items-center">
-												<div className="w-1/2 border-r flex justify-center items-center text-gray-500 cursor-pointer h-full hover:text-blue-600 border">
-													<div className="bg-red-700 h-full">
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															width="20"
-															height="20"
-															viewBox="0 0 24 24"
-															fill="none"
-															stroke="currentColor"
-															strokeWidth="1.8"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-															className="feather feather-thumbs-up"
-														>
-															<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
-														</svg>
-													</div>
-													<div className="bg-blue-500">
-														<span className="ml-1 font-medium text-sm">1</span>
-													</div>
-												</div>
-												<div className="w-1/2 flex justify-center items-center text-gray-500 cursor-pointer hover:text-blue-600">
-													<span>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															width="20"
-															height="20"
-															viewBox="0 0 24 24"
-															fill="none"
-															stroke="currentColor"
-															strokeWidth="1.8"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-															className="feather feather-message-circle"
-														>
-															<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-														</svg>
-													</span>
-												</div>
-											</div>
-										</div>
-										<Modal
-											showModal={showModal}
-											Delete={() => deleteComplaint(data._id)}
-											Cancel={closeModal}
-											cancelBackDrop={closeModal}
-										/>
-									</div>
+										username={data.username}
+										createdAt={data.createdAt}
+										complaintname={data.complaintname}
+										category={data.category}
+										sector={data.sector}
+										description={data.description}
+										comments={data.comments}
+										// deleteComment={() =>
+										// 	deleteComment(data.comments.postedBy, data.comments._id, data._id)
+										// }
+										comp_id={data._id}
+										commentValue={comment}
+										onChange={(e) => setComment(e.target.value)}
+										onSubmit={(e) => submitComment(e, data._id, data.postedBy)}
+										Delete={() => deleteComplaint(data._id)}
+									/>
 								))
 							) : (
 								<>
+									<HomePageLoader />
+									<HomePageLoader />
 									<HomePageLoader />
 								</>
 							)}

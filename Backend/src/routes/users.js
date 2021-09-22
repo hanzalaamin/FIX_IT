@@ -142,7 +142,7 @@ router.post("/register", async (req, res) => {
 
 router.get("/logout", passport.authenticate("jwt", { session: false }), (req, res) => {
 	res.clearCookie("access_token");
-	res.json({ message: "You logout successfully", user: "", success: true });
+	res.send({ message: "You logout successfully", user: "", success: true });
 });
 
 router.get("/authenticated", passport.authenticate("jwt", { session: false }), (req, res) => {

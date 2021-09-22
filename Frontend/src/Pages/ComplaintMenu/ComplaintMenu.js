@@ -15,6 +15,7 @@ const ComplaintMenu = () => {
 	const [loading, setLoading] = useState(false);
 	const { complaintTitle, sector, category, description } = complaint;
 	const [showDrawer, setShowDrawer] = useState(false);
+	const [show, setShow] = useState(false);
 
 	const openSideDrawer = () => {
 		setShowDrawer(true);
@@ -26,6 +27,13 @@ const ComplaintMenu = () => {
 	const inputChangeHandler = (e) => {
 		setComplaint({ ...complaint, [e.target.name]: e.target.value });
 	};
+
+	const getCategory = (value) => {
+		console.log(value);
+		setShow(false);
+		setComplaint({ ...complaint, category: value });
+	};
+	console.log(category);
 
 	const submit = (e) => {
 		console.log(complaintTitle, sector, category, description);
@@ -39,19 +47,25 @@ const ComplaintMenu = () => {
 					const { message } = data;
 					setMsg(<Message close={() => setMsg(null)}>{message.msgBody}</Message>);
 					setLoading(false);
+					setComplaint({
+						complaintTitle: "",
+						sector: "",
+						category: "",
+						description: "",
+					});
 				}
 			);
-			setComplaint({
-				complaintTitle: "",
-				sector: "",
-				category: "",
-				description: "",
-			});
 		}
 	};
 
 	return (
-		<div className="w-full flex" style={{ backgroundColor: "#F5F7FB" }}>
+		<div
+			className="w-full flex"
+			style={{
+				// backgroundColor: "#F5F7FB",
+				backgroundColor: "#fafafa",
+			}}
+		>
 			<Sidebar
 				show={showDrawer}
 				closeBackDrop={closeSideDrawer}
@@ -70,7 +84,7 @@ const ComplaintMenu = () => {
 						<div className="mb-6">
 							<label className="font-semibold text-md mb-1 block">Complaint Name:</label>
 							<input
-								className="w-full ring-1 ring-gray-300 rounded-lg h-16 px-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+								className="w-full ring-1 ring-gray-300 rounded-lg h-12 px-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
 								type="text"
 								name="complaintTitle"
 								value={complaintTitle}
@@ -80,7 +94,7 @@ const ComplaintMenu = () => {
 						<div className="mb-6">
 							<label className="font-semibold text-md mb-1 block">Select Area:</label>
 							<input
-								className="w-full ring-1 ring-gray-300 rounded-lg h-16 px-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+								className="w-full ring-1 ring-gray-300 rounded-lg h-12 px-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
 								type="text"
 								name="sector"
 								value={sector}
@@ -90,12 +104,36 @@ const ComplaintMenu = () => {
 						<div className="mb-6">
 							<label className="font-semibold text-md mb-1 block">Select Category:</label>
 							<input
-								className="w-full ring-1 ring-gray-300 rounded-lg h-16 px-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-								type="text"
+								className={
+									"w-full ring-1 ring-gray-300 h-12 px-4 text-lg focus:outline-none " +
+									(show ? "rounded-t-lg" : "rounded-lg")
+								}
 								name="category"
 								value={category}
 								onChange={inputChangeHandler}
+								onClick={() => setShow(!show)}
+								readOnly
 							/>
+							<ul
+								className={
+									"bg-white ring-1 ring-gray-300 rounded-b-lg " +
+									(show ? "block " : "hidden")
+								}
+							>
+								<li
+									className="w-full border-t h-12 px-4 text-lg hover:bg-gray-200 flex items-center"
+									onClick={() => getCategory("Water")}
+								>
+									Water
+								</li>
+								<li
+									className="w-full h-12 border-t px-4 text-lg hover:bg-gray-200 rounded-b-lg flex items-center"
+									onClick={() => getCategory("Electricity")}
+								>
+									Electricity
+								</li>
+							</ul>
+							{/* </input> */}
 						</div>
 						<div className="mb-6">
 							<label className="font-semibold text-md mb-1 block">

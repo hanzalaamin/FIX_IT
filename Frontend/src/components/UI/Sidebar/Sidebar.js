@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import AuthService from "../../../services/AuthService";
@@ -7,6 +7,7 @@ import Cross from "../../../assets/svgs/cross.svg";
 import NavbarItem from "../../Navbar/NavbarItems/NavbarItem/NavbarItem";
 
 const Sidebar = (props) => {
+	const [active, setActive] = useState("");
 	let joinClasses = "transform -translate-x-full lg:translate-x-0 transition duration-500 ease-in";
 	if (props.show) {
 		joinClasses = " ";
@@ -156,8 +157,12 @@ const Sidebar = (props) => {
 					<div className="py-4 mb-4">
 						<ul className="ml-4">
 							<Link
+								onClick={() => setActive("Home")}
 								to={`/${user.username}`}
-								className="mb-2 px-4 py-4 text-gray-100 flex flex-row  border-gray-300 hover:text-black hover:bg-gray-300  hover:font-bold rounded-lg"
+								className={
+									"mb-2 px-4 py-4 text-gray-100 flex flex-row  border-gray-300 hover:text-gray-800 hover:bg-gray-300  hover:font-bold rounded-lg " +
+									(active === "Home" ? "bg-gray-300 text-gray-800" : " ")
+								}
 							>
 								<span>
 									<svg className="fill-current h-5 w-5 " viewBox="0 0 24 24">
@@ -197,11 +202,12 @@ const Sidebar = (props) => {
 							</li> */}
 
 							<Link
-								// onClick={() => {
-								// 	props.history.push(`/${user._id}/${user.username}/complaint`);
-								// }}
+								onClick={() => setActive("Add")}
 								to={`/${user.username}/register_complaint`}
-								className="mb-2 px-4 py-4 text-gray-100 flex flex-row  border-gray-300 hover:text-black hover:bg-gray-300  hover:font-bold rounded-lg"
+								className={
+									"mb-2 px-4 py-4 text-gray-100 flex flex-row  border-gray-300 hover:text-black hover:bg-gray-300  hover:font-bold rounded-lg " +
+									(active === "Add" ? "bg-gray-300 text-gray-800" : " ")
+								}
 							>
 								<span>
 									<svg

@@ -14,36 +14,41 @@ router.get("/allcomplaints", (req, res) => {
 	});
 });
 
-// Get User Complaint in home page
-router.get("/complaints", passport.authenticate("jwt", { session: false }), async (req, res) => {
-	// User.findById({ _id: req.user._id })
-	// 	.populate("complaints")
-	// 	.exec((err, complaints) => {
-	// 		if (err) {
-	// 			res.status(400).json({ message: { msgBody: err } });
-	// 		} else {
-	// 			res.json(complaints);
-	// 		}
-	// 	});
+// Get User Complaints and complaints comments
+router.get(
+	"/:id/complaints",
+	passport.authenticate("jwt", { session: false }),
+	async (req, res) => {
+		// User.findById({ _id: req.user._id })
+		// 	.populate("complaints")
+		// 	.exec((err, complaints) => {
+		// 		if (err) {
+		// 			res.status(400).json({ message: { msgBody: err } });
+		// 		} else {
+		// 			res.json(complaints);
+		// 		}
+		// 	});
 
-	await Complaint.find({ postedBy: req.user._id })
-		.populate("comments")
-		.exec((err, complaints) => {
-			if (err) {
-				res.status(400).json({ message: { msgBody: err } });
-			} else {
-				res.send(complaints);
-			}
-		});
+		await Complaint.find({ postedBy: req.user._id })
+			.populate({ path: "comments", populate: { path: "postedBy", select: "username" } })
+			.populate("postedBy", "username _id")
+			.exec((err, complaints) => {
+				if (err) {
+					res.status(400).json({ message: { msgBody: err } });
+				} else {
+					res.send(complaints);
+				}
+			});
 
-	// Complaint.find({ postedBy: req.user._id }, (err, complaints) => {
-	// 	if (err) {
-	// 		res.status(400).json({ message: { msgBody: err } });
-	// 	} else {
-	// 		res.json(complaints);
-	// 	}
-	// });
-});
+		// Complaint.find({ postedBy: req.user._id }, (err, complaints) => {
+		// 	if (err) {
+		// 		res.status(400).json({ message: { msgBody: err } });
+		// 	} else {
+		// 		res.json(complaints);
+		// 	}
+		// });
+	}
+);
 
 // Add User Complaint
 router.post(

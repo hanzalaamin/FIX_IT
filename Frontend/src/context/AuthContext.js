@@ -7,20 +7,19 @@ export const AuthContext = createContext();
 const Auth = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
-	const [isLoaded, setIsLoaded] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		AuthService.isAuthenticated().then((data) => {
 			setUser(data.user);
 			setIsAuthenticated(data.isAuthenticated);
-			setIsLoaded(true);
+			setLoading(true);
 		});
 	}, []);
 
 	return (
 		<div>
-			{!isLoaded ? (
-				// <p>Error</p>
+			{!loading ? (
 				<Spinner />
 			) : (
 				<AuthContext.Provider value={{ user, setUser, isAuthenticated, setIsAuthenticated }}>

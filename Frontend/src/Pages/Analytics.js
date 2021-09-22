@@ -18,7 +18,12 @@ const Analytics = () => {
 	};
 
 	return (
-		<div className="w-full" style={{ backgroundColor: "#F5F7FB" }}>
+		<div
+			className="w-full"
+			style={{
+				backgroundColor: "#fafafa",
+			}}
+		>
 			<Sidebar
 				show={showDrawer}
 				closeBackDrop={closeSideDrawer}
@@ -47,16 +52,16 @@ const Analytics = () => {
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
 						<div className="grid grid-cols-2 gap-10">
-							<div className="bg-white p-4 shadow "></div>
-							<div className="bg-white p-4 shadow "></div>
-							<div className="bg-white p-4 shadow "></div>
-							<div className="bg-white p-4 shadow "></div>
+							<div className="bg-white p-4 shadow rounded-lg"></div>
+							<div className="bg-white p-4 shadow rounded-lg"></div>
+							<div className="bg-white p-4 shadow rounded-lg"></div>
+							<div className="bg-white p-4 shadow rounded-lg"></div>
 						</div>
-						<div className="bg-white  p-4 flex items-center justify-center shadow h-full">
+						<div className="bg-white  p-4 flex items-center justify-center shadow h-full rounded-lg">
 							<PieChart />
 						</div>
 					</div>
-					<div className="w-full bg-white p-4 shadow">
+					<div className="w-full bg-white p-4 shadow rounded-lg">
 						<BarChart />
 					</div>
 				</div>

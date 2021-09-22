@@ -17,8 +17,8 @@ class Complaint {
 			)
 			.then((res) => res.data);
 	}
-	getComplaints() {
-		return axios.get("/complaints").then((res) => res.data);
+	getComplaints(id) {
+		return axios.get(`${id}/complaints`).then((res) => res.data);
 	}
 
 	getAllComplaints() {

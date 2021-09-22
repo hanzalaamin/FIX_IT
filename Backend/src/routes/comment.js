@@ -5,13 +5,14 @@ const Comment = require("../models/Comment");
 // const User = require("../models/user");
 const router = express.Router();
 
-// Getting Complaints With Populating Comments
+// Getting Complaints With Populating Comments and postedBy which user
 router.get(
 	"/:id/complaint/:id/comments",
 	passport.authenticate("jwt", { session: false }),
 	(req, res) => {
 		Complaint.findById({ _id: req.params.id })
 			.populate("comments")
+			.populate("postedBy")
 			.exec((err, comments) => {
 				if (err) {
 					res.status(400).json({ message: { msgBody: err } });
@@ -27,15 +28,15 @@ router.post(
 	"/:id/complaint/:id/comment",
 	passport.authenticate("jwt", { session: false }),
 	(req, res) => {
-		console.log(req.body.text);
+		console.log(req.body.commentText);
 
-		if (req.body.text === "") {
+		if (req.body.commentText === "") {
 			res.status(500).json({
 				message: { msgBody: "Comment not added", msgError: true },
 			});
 		} else {
 			const newComment = new Comment({
-				text: req.body.text,
+				comment: req.body.commentText,
 				postedBy: req.user._id,
 			});
 

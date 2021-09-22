@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import "./App.css";
 import Login from "./Pages/Login/Login";
 import Signup from "./Pages/Signup/Signup";
@@ -8,7 +8,7 @@ import Home from "./Pages/Home/Home";
 import Settings from "./Pages/Settings";
 import Analytics from "./Pages/Analytics";
 import { AuthContext } from "./context/AuthContext";
-import ErrorPage404 from "./components/404";
+import LandingPage from "./Pages/LandingPage";
 
 function App() {
 	const { isAuthenticated } = useContext(AuthContext);
@@ -17,9 +17,10 @@ function App() {
 		<>
 			{!isAuthenticated ? (
 				<Switch>
-					<Route exact path="/" component={ErrorPage404} />
+					<Route exact path="/" component={LandingPage} />
 					<Route path="/register" component={Signup} />
 					<Route path="/login" component={Login} />
+					<Redirect exact to="/login" />
 				</Switch>
 			) : (
 				<Switch>
