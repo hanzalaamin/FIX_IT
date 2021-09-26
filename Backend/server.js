@@ -30,6 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/", require("./src/routes/users"));
 app.use("/", require("./src/routes/complaint"));
 app.use("/", require("./src/routes/comment"));
+app.use("/", require("./src/routes/Vote"));
 
 const PORT = process.env.PORT || 2000;
 app.listen(PORT, () => {

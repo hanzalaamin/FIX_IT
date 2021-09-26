@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Modal from "./Modal";
 import Comment from "../../services/Comment";
+import Vote from "../../services/Vote";
+import CommentList from "./CommentList";
+import { AuthContext } from "../../context/AuthContext";
 
 const ComplaintsList = (props) => {
 	const [menu, setMenu] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	const [showComment, setShowComment] = useState(false);
-	const [showCommentMenu, setShowCommentMenu] = useState(false);
+	const { user } = useContext(AuthContext);
+	// const [showCommentMenu, setShowCommentMenu] = useState(false);
 
 	const deleteComment = (user_id, complaint_id, comment_id) => {
 		console.log(user_id, complaint_id, comment_id);
@@ -33,6 +37,15 @@ const ComplaintsList = (props) => {
 		setShowModal(false);
 	};
 
+	// like dislike
+	const like = (complaint_id) => {
+		Vote.likeComplaint(complaint_id).then((data) => console.log(data));
+	};
+
+	const disLike = (complaint_id) => {
+		Vote.dislikeComplaint(complaint_id).then((data) => console.log(data));
+	};
+
 	return (
 		<div className="w-full border shadow border-gray-200 p-4 mb-4 rounded-lg hover:shadow-lg">
 			<div className="flex">
@@ -43,7 +56,7 @@ const ComplaintsList = (props) => {
 							<h4 className="font-semibold p-0">{props.username}</h4>
 							<h4 className="text-gray-400 text-sm">
 								<span>{new Date(props.createdAt).toDateString()}</span>,
-								{/* <span>{new Date(props.createdAt).toTimeString()}</span> */}
+								<span>{new Date(props.createdAt).toUTCString()}</span>
 							</h4>
 						</div>
 						<div className="relative">
@@ -116,34 +129,67 @@ const ComplaintsList = (props) => {
 					<span className="font-semibold">Area : </span>
 					{props.sector}
 				</p>
-				<p className="text-base font-medium border-b pb-2 text-gray-800">
+				<p className="break-all text-base font-medium border-b pb-2 text-gray-800">
 					<span className="font-semibold">Description : </span>
 					{props.description}
 				</p>
 			</div>
 			<div className="mt-2">
 				<div className="flex justify-center items-center">
-					<div className="w-1/2 border-r flex justify-center items-center text-gray-500 cursor-pointer h-full hover:text-blue-600">
-						<div>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="20"
-								height="20"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								strokeWidth="1.8"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								className="feather feather-thumbs-up"
-							>
-								<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
-							</svg>
-						</div>
-						<div>
-							<span className="ml-1 font-medium text-base">0</span>
-						</div>
-					</div>
+					{/* Like Section */}
+					{props.likesID.includes(user._id) ? (
+						<button
+							onClick={() => disLike(props.comp_id)}
+							className="w-1/2 border-r flex justify-center items-center cursor-pointer text-blue-600"
+						>
+							<div>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="20"
+									height="20"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="1.8"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									className="feather feather-thumbs-up"
+								>
+									<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+								</svg>
+							</div>
+							<div>
+								<span className="ml-1 font-medium text-base">{props.noOfVotes}</span>
+							</div>
+						</button>
+					) : (
+						<button
+							onClick={() => like(props.comp_id)}
+							className="w-1/2 border-r flex justify-center items-center cursor-pointer text-gray-500"
+						>
+							<div>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="20"
+									height="20"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="1.8"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									className="feather feather-thumbs-up"
+								>
+									<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+								</svg>
+							</div>
+							<div>
+								<span className="ml-1 font-medium text-base">{props.noOfVotes}</span>
+							</div>
+						</button>
+					)}
+
+					{/* Comment Section */}
 					<div
 						className="w-1/2 flex justify-center items-center text-gray-500 cursor-pointer hover:text-blue-600"
 						onClick={openCommentBox}
@@ -166,81 +212,89 @@ const ComplaintsList = (props) => {
 							<span className="font-medium text-base">Comments</span>
 						</button>
 						<div>
-							<span className="ml-1 font-medium text-base">{props.commentsLength}</span>
+							<span className="ml-1 font-medium text-base">{props.noOfComments}</span>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			{/* Comment */}
+			{/* Displaying Comments */}
 			<div className={"mt-4 " + (showComment ? "block" : "hidden")}>
 				<div>
 					{props.comments.map((comment) => (
-						<div className="flex items-center justify-start" key={comment._id}>
-							<div className="mr-2">
-								<img src="" className="w-9 h-9 rounded-full" alt="" />
-							</div>
-							<div className="w-full">
-								<div className="w-full flex justify-between items-center">
-									<div className="m-0">
-										<span className="text-sm font-semibold capitalize m-0">
-											{comment.postedBy.username}
-										</span>
-										<span className="text-sm ml-2 text-gray-400">
-											{new Date(comment.createdAt).toUTCString()}
-										</span>
-									</div>
-									<div className="relative">
-										<button
-											className="hover:bg-gray-800 hover:text-gray-100 rounded-full p-2"
-											onClick={() => setShowCommentMenu(!showCommentMenu)}
-										>
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												width="16"
-												height="16"
-												viewBox="0 0 24 24"
-												fill="none"
-												stroke="currentColor"
-												strokeWidth="2"
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												className="feather feather-more-vertical"
-											>
-												<circle cx="12" cy="12" r="1"></circle>
-												<circle cx="12" cy="5" r="1"></circle>
-												<circle cx="12" cy="19" r="1"></circle>
-											</svg>
-										</button>
-										<div
-											className={
-												"absolute top-0 right-8 bg-white rounded-lg border shadow w-44 " +
-												(showCommentMenu ? "block" : "hidden")
-											}
-										>
-											<button
-												className="p-3 rounded-lg flex items-center justify-center hover:bg-gray-800 hover:text-gray-100 w-full"
-												onClick={() =>
-													deleteComment(
-														props.comp_id,
-														comment._id,
-														comment.postedBy._id
-													)
-												}
-											>
-												<span className="ml-3 text-sm">Delete</span>
-											</button>
-										</div>
-									</div>
-								</div>
-								<p className="m-0">{comment.comment}</p>
-							</div>
-						</div>
+						<CommentList
+							key={comment._id}
+							username={comment.postedBy.username}
+							createdAt={comment.createdAt}
+							deleteComment={() =>
+								deleteComment(comment.postedBy._id, props.comp_id, comment._id)
+							}
+							comment={comment.comment}
+						/>
+						// <div className="flex items-center justify-start" key={comment._id}>
+						// 	<div className="mr-2">
+						// 		<img src="" className="w-9 h-9 rounded-full" alt="" />
+						// 	</div>
+						// 	<div className="w-full">
+						// 		<div className="w-full flex justify-between items-center">
+						// 			<div className="m-0">
+						// 				<span className="text-sm font-semibold capitalize m-0">
+						// 					{comment.postedBy.username}
+						// 				</span>
+						// 				<span className="text-sm ml-2 text-gray-400">
+						// 					{new Date(comment.createdAt).toUTCString()}
+						// 				</span>
+						// 			</div>
+						// 			<div className="relative">
+						// 				<button
+						// 					className="hover:bg-gray-800 hover:text-gray-100 rounded-full p-2"
+						// 					onClick={() => setShowCommentMenu(!showCommentMenu)}
+						// 				>
+						// 					<svg
+						// 						xmlns="http://www.w3.org/2000/svg"
+						// 						width="16"
+						// 						height="16"
+						// 						viewBox="0 0 24 24"
+						// 						fill="none"
+						// 						stroke="currentColor"
+						// 						strokeWidth="2"
+						// 						strokeLinecap="round"
+						// 						strokeLinejoin="round"
+						// 						className="feather feather-more-vertical"
+						// 					>
+						// 						<circle cx="12" cy="12" r="1"></circle>
+						// 						<circle cx="12" cy="5" r="1"></circle>
+						// 						<circle cx="12" cy="19" r="1"></circle>
+						// 					</svg>
+						// 				</button>
+						// 				<div
+						// 					className={
+						// 						"absolute top-0 right-8 bg-white rounded-lg border shadow w-44 " +
+						// 						(showCommentMenu ? "block" : "hidden")
+						// 					}
+						// 				>
+						// 					<button
+						// 						className="p-3 rounded-lg flex items-center justify-center hover:bg-gray-800 hover:text-gray-100 w-full"
+						// 						onClick={() =>
+						// 							deleteComment(
+						// 								props.comp_id,
+						// 								comment._id,
+						// 								comment.postedBy._id
+						// 							)
+						// 						}
+						// 					>
+						// 						<span className="ml-3 text-sm">Delete</span>
+						// 					</button>
+						// 				</div>
+						// 			</div>
+						// 		</div>
+						// 		<p className="m-0">{comment.comment}</p>
+						// 	</div>
+						// </div>
 					))}
 				</div>
 
-				{/* Comment Form */}
-				{/* <form onSubmit={(e) => submitComment(e, data.postedBy)} className="mt-2"> */}
+				{/* Submitting Comment */}
 				<form onSubmit={props.onSubmit} className="mt-2">
 					<div className="flex items-center justify-start">
 						<div>

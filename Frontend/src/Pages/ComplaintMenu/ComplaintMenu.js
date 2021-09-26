@@ -17,6 +17,16 @@ const ComplaintMenu = () => {
 	const [showDrawer, setShowDrawer] = useState(false);
 	const [show, setShow] = useState(false);
 
+	const categories = [
+		"Water",
+		"Electricity",
+		"Gas",
+		"Sewage",
+		"Road",
+		"Main-holes",
+		"Street-Light",
+	];
+
 	const openSideDrawer = () => {
 		setShowDrawer(true);
 	};
@@ -41,6 +51,7 @@ const ComplaintMenu = () => {
 		setLoading(true);
 		if (!complaintTitle && !sector && !category && !description) {
 			setMsg(<Message close={() => setMsg(null)}>Please Fill All Credentials</Message>);
+			setLoading(false);
 		} else {
 			Complaints.registerComplaint(complaintTitle, sector, category, description).then(
 				(data) => {
@@ -83,18 +94,26 @@ const ComplaintMenu = () => {
 						{msg ? msg : null}
 						<div className="mb-6">
 							<label className="font-semibold text-md mb-1 block">Complaint Name:</label>
-							<input
+							{/* <input
 								className="w-full ring-1 ring-gray-300 rounded-lg h-12 px-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
 								type="text"
 								name="complaintTitle"
 								value={complaintTitle}
 								onChange={inputChangeHandler}
-							/>
+							/> */}
+							<textarea
+								className="w-full ring-1 ring-gray-300 rounded px-2 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+								type="text"
+								rows="3"
+								name="complaintTitle"
+								value={complaintTitle}
+								onChange={inputChangeHandler}
+							></textarea>
 						</div>
 						<div className="mb-6">
 							<label className="font-semibold text-md mb-1 block">Select Area:</label>
 							<input
-								className="w-full ring-1 ring-gray-300 rounded-lg h-12 px-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+								className="w-full ring-1 ring-gray-300 rounded h-12 px-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
 								type="text"
 								name="sector"
 								value={sector}
@@ -103,35 +122,69 @@ const ComplaintMenu = () => {
 						</div>
 						<div className="mb-6">
 							<label className="font-semibold text-md mb-1 block">Select Category:</label>
-							<input
+							<div
 								className={
-									"w-full ring-1 ring-gray-300 h-12 px-4 text-lg focus:outline-none " +
-									(show ? "rounded-t-lg" : "rounded-lg")
+									"flex items-center w-full ring-1 ring-gray-300 h-12 px-4 text-lg focus:outline-none cursor-pointer bg-white " +
+									(show ? "rounded-t" : "rounded")
 								}
-								name="category"
-								value={category}
-								onChange={inputChangeHandler}
 								onClick={() => setShow(!show)}
-								readOnly
-							/>
+							>
+								<input
+									className="w-full px-4 text-lg focus:outline-none cursor-pointer"
+									// className={
+									// 	"w-full ring-1 ring-gray-300 h-12 px-4 text-lg focus:outline-none cursor-pointer  " +
+									// 	(show ? "rounded-t" : "rounded")
+									// }
+									name="category"
+									value={category}
+									onChange={inputChangeHandler}
+									readOnly
+								/>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="1"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									className={
+										"feather feather-chevron-down transform text-gray-600 " +
+										(show ? "rotate-180" : "rotate-0")
+									}
+								>
+									<polyline points="6 9 12 15 18 9"></polyline>
+								</svg>
+							</div>
 							<ul
 								className={
-									"bg-white ring-1 ring-gray-300 rounded-b-lg " +
+									"bg-white ring-1 ring-gray-300 rounded-b-lg h-48 overflow-y-scroll scrollbar scrollbar-hidden hover:scrollbar-auto scrollbar-track-gray-300 scrollbar-thumb-gray-500 border-r " +
 									(show ? "block " : "hidden")
 								}
 							>
-								<li
+								{categories.map((val) => (
+									<li
+										key={val}
+										className="w-full border-t h-12 px-4 text-base hover:bg-gray-200 flex items-center"
+										onClick={() => getCategory(val)}
+									>
+										{val}
+									</li>
+								))}
+								{/* <li
 									className="w-full border-t h-12 px-4 text-lg hover:bg-gray-200 flex items-center"
 									onClick={() => getCategory("Water")}
 								>
 									Water
-								</li>
-								<li
+								</li> */}
+								{/* <li
 									className="w-full h-12 border-t px-4 text-lg hover:bg-gray-200 rounded-b-lg flex items-center"
 									onClick={() => getCategory("Electricity")}
 								>
 									Electricity
-								</li>
+								</li> */}
 							</ul>
 							{/* </input> */}
 						</div>
@@ -140,7 +193,7 @@ const ComplaintMenu = () => {
 								The Complaint is Regarding:
 							</label>
 							<textarea
-								className="w-full ring-1 ring-gray-300 rounded-lg px-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400 py-2"
+								className="w-full ring-1 ring-gray-300 rounded px-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400 py-2"
 								name="description"
 								rows="8"
 								value={description}
@@ -149,7 +202,7 @@ const ComplaintMenu = () => {
 						</div>
 						<button
 							type="submit"
-							className="bg-blue-400 hover:bg-blue-500 mb-6 h-16 rounded-lg text-white w-full font-semibold flex items-center justify-center"
+							className="bg-blue-400 hover:bg-blue-500 mb-6 h-16 rounded text-white w-full font-semibold flex items-center justify-center"
 						>
 							<span className="mr-5">SUBMIT</span>{" "}
 							{loading ? <div className="w-6 h-6 rounded-full loader"></div> : null}

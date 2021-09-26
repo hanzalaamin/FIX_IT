@@ -8,15 +8,15 @@ const Modal = (props) => {
 
 	return (
 		<div
-			className={"fixed z-10 inset-0 overflow-y-hidden " + classes}
+			className={"fixed z-10 -top-1/2 left-1/3 overflow-y-hidden " + classes}
 			onClick={props.cancelBackDrop}
 		>
 			<div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-				<div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+				<div className="fixed inset-0 h-full w-full bg-gray-500 bg-opacity-75 transition-opacity"></div>
 				<span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
 					&#8203;
 				</span>
-				<div className="block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+				<div className="block fixe top-1/ left-1/ right-1/ bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
 					<div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
 						<div className="sm:flex sm:items-start">
 							<div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">

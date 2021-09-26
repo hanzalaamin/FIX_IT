@@ -3,57 +3,61 @@ import Complaints from "../../services/Complaints";
 import Comment from "../../services/Comment";
 import { AuthContext } from "../../context/AuthContext";
 import { Message } from "../../Messages/Message";
-import Img from "../../assets/images/03.jpg";
 import Navbar from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/UI/Sidebar/Sidebar";
 import { HomePageLoader } from "../../components/UI/Spinner/Spinner";
-import Modal from "../../components/UI/Modal";
 import ComplaintsList from "../../components/UI/ComplaintsList";
-import { Redirect, useHistory } from "react-router";
-import axios from "axios";
+// import Img from "../../assets/images/03.jpg";
+// import Modal from "../../components/UI/Modal";
+// import { Redirect, useHistory } from "react-router";
 
 const Home = () => {
 	const [message, setMessage] = useState(null);
 	const [complaints, setComplaints] = useState([]);
+	const [reload, setReload] = useState(false);
 	// const [complaintLength, setComplaintLength] = useState(0);
 	// const [openComment, setOpenComment] = useState(false);
+	// const [ID, setID] = useState("");
 	const [comment, setComment] = useState("");
-	const [ID, setID] = useState("");
 	const [showDrawer, setShowDrawer] = useState(false);
 	// const [menu, setMenu] = useState(false);
 	// const [showModal, setShowModal] = useState(false);
 	// const [time, setTime] = useState("");
-	const { user, isAuthenticated } = useContext(AuthContext);
-	let history = useHistory();
+	const { user } = useContext(AuthContext);
+	// let history = useHistory();
 
-	useEffect(() => {
-		// axios.get("http://localhost:3000/authenticated").then((res) => res.json());
-		// console.log();
-		if (!isAuthenticated) {
-			// <Redirect to="/login" />;
-			history.push("/login");
-		}
-	}, []);
+	// useEffect(() => {
+	// axios.get("http://localhost:3000/authenticated").then((res) => res.json());
+	// console.log();
+	// if (!isAuthenticated) {
+	// <Redirect to="/login" />;
+	// history.push("/login");
+	// }
+	// }, []);
 
 	// Fetching Complaints and call useEffect when complaintlenght changes
 	useEffect(() => {
 		Complaints.getComplaints(user._id).then((data) => {
 			console.log(data);
-			// setComplaintLength(data.length);
 			setComplaints(data);
-			// let hours = new Date(data.createdAt).getHours();
-			// let minutes = new Date(data.createdAt).getHours();
-			// console.log(minutes);
-			// let ampm = hours >= 12 ? "PM" : "AM";
-			// hours = hours % 12;
-			// hours = hours ? hours : 12;
-			// // minutes = minutes < 10 ?
-			// let Time = hours + " : " + minutes + " " + ampm;
-			// setTime(Time);
+			// setReload(!reload);
+			console.log(data.votes);
 		});
-		// }
+		// setReload(!reload);
 		console.log(complaints.length);
 	}, []);
+
+	// Deleting Complaints by ID
+	const deleteComplaint = (id) => {
+		console.log(id);
+		Complaints.deleteComplaint(id).then((data) => {
+			console.log(data);
+			setMessage(<Message>{data.message.msgBody}</Message>);
+			setReload(!reload);
+			// setComplaintLength(complaintLength);
+		});
+		// setShowModal(false);
+	};
 
 	const openSideDrawer = () => {
 		setShowDrawer(true);
@@ -84,22 +88,12 @@ const Home = () => {
 		e.preventDefault();
 		Comment.registerComment(postedBy, complaint_id, comment).then((data) => console.log(data));
 		setComment("");
+		setReload(!reload);
 	};
 
 	// const openMenu = () => {
 	// 	setMenu(!menu);
 	// };
-
-	// Deleting Complaints by ID
-	const deleteComplaint = (id) => {
-		console.log(id);
-		Complaints.deleteComplaint(id).then((data) => {
-			console.log(data);
-			setMessage(<Message>{data.message.msgBody}</Message>);
-			// setComplaintLength(complaintLength);
-		});
-		// setShowModal(false);
-	};
 
 	// Open Modal
 	// const openModal = () => {
@@ -372,9 +366,14 @@ const Home = () => {
 										sector={data.sector}
 										description={data.description}
 										comments={data.comments}
+										noOfComments={data.comments.length}
+										noOfVotes={data.votes.length}
+										likesID={data.votes}
+										// voted_User_ID={data.votes._id}
 										// deleteComment={() =>
 										// 	deleteComment(data.comments.postedBy, data.comments._id, data._id)
 										// }
+										// castVote={data._id}
 										comp_id={data._id}
 										commentValue={comment}
 										onChange={(e) => setComment(e.target.value)}

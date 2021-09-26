@@ -4,14 +4,12 @@ import AuthService from "../../services/AuthService";
 import { AuthContext } from "../../context/AuthContext";
 import img from "../../assets/images/Login Screen.jpg";
 import { Message } from "../../Messages/Message";
-// import Spinner from "../../components/UI/Spinner/Spinner";
 import "../../App.css";
 
 const Login = () => {
 	const history = useHistory();
 	const [user, setUser] = useState({ email: "", password: "" });
 	const [pwdType, setPwdType] = useState(true);
-	const [iconType, setIconType] = useState(true);
 	const [message, setMessage] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const authContext = useContext(AuthContext);
@@ -22,7 +20,6 @@ const Login = () => {
 
 	const showPassword = () => {
 		setPwdType(!pwdType);
-		setIconType(!iconType);
 	};
 
 	const Submit = (e) => {
@@ -36,9 +33,11 @@ const Login = () => {
 					setUser({ ...user, email: "", password: "" });
 					authContext.setUser(user);
 					authContext.setIsAuthenticated(isAuthenticated);
-					setLoading(false);
 					history.push(`/${user.username}`);
 				}
+				setLoading(false);
+			} else {
+				setLoading(false);
 			}
 		});
 	};
@@ -71,7 +70,7 @@ const Login = () => {
 								<div className="relative  mb-2">
 									<span className="absolute right-4 top-0 cursor-pointer text-gray-500 flex items-center h-full">
 										<i
-											className={iconType ? "far fa-eye" : "fas fa-eye-slash"}
+											className={pwdType ? "far fa-eye" : "fas fa-eye-slash"}
 											onClick={showPassword}
 										></i>
 									</span>
@@ -84,8 +83,8 @@ const Login = () => {
 										onChange={inputChangeHandler}
 									/>
 								</div>
-								<div className="flex justify-between items-center mb-6">
-									<div className="flex items-center">
+								<div className="flex justify-end items-center mb-6">
+									{/* <div className="flex items-center">
 										<input
 											type="checkbox"
 											name="rememberMe"
@@ -93,7 +92,7 @@ const Login = () => {
 											className="w-4 h-4 border-gray-300 rounded-lg"
 										/>
 										<span className="ml-2 font-base">Remember Me</span>
-									</div>
+									</div> */}
 									<Link to="" className="text-blue-500 font-semibold ">
 										Forgot password?
 									</Link>
