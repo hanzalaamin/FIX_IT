@@ -55,8 +55,8 @@ const ComplaintsList = (props) => {
 						<div className="">
 							<h4 className="font-semibold p-0">{props.username}</h4>
 							<h4 className="text-gray-400 text-sm">
-								<span>{new Date(props.createdAt).toDateString()}</span>,
-								<span>{new Date(props.createdAt).toUTCString()}</span>
+								<span>{new Date(props.createdAt).toDateString()}</span>
+								{/* <span>{new Date(props.createdAt).toUTCString()}</span> */}
 							</h4>
 						</div>
 						<div className="relative">

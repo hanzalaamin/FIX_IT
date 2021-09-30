@@ -16,6 +16,7 @@ const ComplaintMenu = () => {
 	const { complaintTitle, sector, category, description } = complaint;
 	const [showDrawer, setShowDrawer] = useState(false);
 	const [show, setShow] = useState(false);
+	const [titleLength, setTitleLength] = useState(0);
 
 	const categories = [
 		"Water",
@@ -102,13 +103,20 @@ const ComplaintMenu = () => {
 								onChange={inputChangeHandler}
 							/> */}
 							<textarea
-								className="w-full ring-1 ring-gray-300 rounded px-2 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+								className="w-full ring-1 ring-gray-300 rounded px-2 text-lg focus:outline-none focus:ring-2 resize-none focus:ring-blue-400"
 								type="text"
 								rows="3"
 								name="complaintTitle"
 								value={complaintTitle}
-								onChange={inputChangeHandler}
+								onChange={(e) => {
+									console.log(e.target.value.length);
+									setTitleLength(e.target.value.length);
+									if (e.target.value.length <= 80) {
+										setComplaint({ ...complaint, complaintTitle: e.target.value });
+									}
+								}}
 							></textarea>
+							<small className="text-gray-400">{titleLength}/80</small>
 						</div>
 						<div className="mb-6">
 							<label className="font-semibold text-md mb-1 block">Select Area:</label>
@@ -160,7 +168,7 @@ const ComplaintMenu = () => {
 							</div>
 							<ul
 								className={
-									"bg-white ring-1 ring-gray-300 rounded-b-lg h-48 overflow-y-scroll scrollbar scrollbar-hidden hover:scrollbar-auto scrollbar-track-gray-300 scrollbar-thumb-gray-500 border-r " +
+									"bg-white ring-1 ring-gray-300 rounded-b h-48 overflow-y-scroll scrollbar scrollbar-hidden hover:scrollbar-auto scrollbar-track-gray-300 scrollbar-thumb-gray-500 border-r " +
 									(show ? "block " : "hidden")
 								}
 							>
@@ -204,7 +212,7 @@ const ComplaintMenu = () => {
 							type="submit"
 							className="bg-blue-400 hover:bg-blue-500 mb-6 h-16 rounded text-white w-full font-semibold flex items-center justify-center"
 						>
-							<span className="mr-5">SUBMIT</span>{" "}
+							<span className="mr-5">SUBMIT</span>
 							{loading ? <div className="w-6 h-6 rounded-full loader"></div> : null}
 						</button>
 					</form>

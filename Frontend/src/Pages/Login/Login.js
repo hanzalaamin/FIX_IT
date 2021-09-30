@@ -58,7 +58,7 @@ const Login = () => {
 								{message ? message : null}
 								<div className="mb-6">
 									<input
-										className="w-full ring-1 ring-gray-300 rounded-lg h-16 px-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+										className="w-full ring-1 ring-gray-300 rounded h-16 px-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
 										type="email"
 										name="email"
 										value={user.email}
@@ -75,7 +75,7 @@ const Login = () => {
 										></i>
 									</span>
 									<input
-										className="w-full ring-1 ring-gray-300 rounded-lg h-16 px-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+										className="w-full ring-1 ring-gray-300 rounded h-16 px-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
 										type={pwdType ? "password" : "text"}
 										name="password"
 										value={user.password}
@@ -99,7 +99,7 @@ const Login = () => {
 								</div>
 								<button
 									type="submit"
-									className="bg-blue-400 hover:bg-blue-500 mb-6 h-16 rounded-lg text-white w-full font-semibold flex items-center justify-center"
+									className="bg-blue-400 hover:bg-blue-500 mb-6 h-16 rounded text-white w-full font-semibold flex items-center justify-center"
 								>
 									<span className="mr-5">SIGN IN</span>
 									{loading ? <div className="w-6 h-6 rounded-full loader"></div> : null}

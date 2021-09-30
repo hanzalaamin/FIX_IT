@@ -58,7 +58,7 @@ const Signup = (props) => {
 								{message ? message : null}
 								<div className="mb-6">
 									<input
-										className="w-full ring-1 ring-gray-300 rounded-lg h-16 px-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+										className="w-full ring-1 ring-gray-300 rounded h-16 px-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
 										type="text"
 										name="username"
 										value={user.username}
@@ -68,7 +68,7 @@ const Signup = (props) => {
 								</div>
 								<div className="mb-6">
 									<input
-										className="w-full ring-1 ring-gray-300 rounded-lg h-16 px-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+										className="w-full ring-1 ring-gray-300 rounded h-16 px-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
 										type="email"
 										name="email"
 										value={user.email}
@@ -85,7 +85,7 @@ const Signup = (props) => {
 										></i>
 									</span>
 									<input
-										className="w-full ring-1 ring-gray-300 rounded-lg h-16 px-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+										className="w-full ring-1 ring-gray-300 rounded h-16 px-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
 										type={pwdType ? "password" : "text"}
 										name="password"
 										value={user.password}
@@ -95,7 +95,7 @@ const Signup = (props) => {
 								</div>
 								<button
 									type="submit"
-									className="bg-blue-400 hover:bg-blue-500 mb-6 h-16 rounded-lg text-white w-full font-semibold"
+									className="bg-blue-400 hover:bg-blue-500 mb-6 h-16 rounded text-white w-full font-semibold"
 								>
 									SIGN UP
 								</button>
