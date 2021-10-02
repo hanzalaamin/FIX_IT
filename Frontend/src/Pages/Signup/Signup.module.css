@@ -1,0 +1,98 @@
+/* .Signup { */
+/* padding: 10px 0 30px 0; */
+/* width: 30rem; */
+/* margin: 60px auto; */
+/* box-shadow: 0 0 10px 5px lightgray; */
+/* font-family: "Roboto", sans-serif; */
+/* font-family: "Montserrat", sans-serif; */
+/* background-color: white; */
+/* min-height: 100vh; */
+/* } */
+/* .Main {
+	padding: 2rem 0;
+	width: 90%;
+	margin: 0 auto;
+} */
+/* .backgroundImage {
+	background-image: url("../../assets/images/Signup.jpg");
+	background-position: 100%;
+	background-size: cover;
+	background-repeat: no-repeat;
+} */
+/* .form {
+	padding-left: 2rem;
+	padding-right: 2rem;
+	font-family: "Oswald", sans-serif;
+	width: 100%;
+	border: 1px solid red;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+} */
+/* .Heading {
+	font-size: 3rem;
+} */
+/* .formGroup {
+	position: relative;
+} */
+/* .icon {
+	position: absolute;
+	right: 1rem;
+	top: 0;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+} */
+/* .icon i {
+	color: gray;
+} */
+/* .input {
+	font-weight: 200;
+	padding: 0.8rem 1rem;
+	height: calc(3.75038rem + 2px);
+	border-radius: 0.6rem;
+	height: 80px;
+	color: red;
+} */
+/* .input:focus {
+	box-shadow: none;
+} */
+/* .Button {
+	background-color: #2787f5d3;
+	padding: 0.8rem 0;
+	color: white;
+	border-radius: 0.6rem;
+} */
+/* .Button:hover {
+	color: white;
+	background-color: #2787f5;
+} */
+/* .Button:focus {
+	box-shadow: none;
+} */
+/* .Footer {
+	font-family: "Roboto", sans-serif;
+	font-weight: 500;
+	font-size: 1.125rem;
+} */
+/* .Signup a {
+	text-decoration: none;
+} */
+/* @media (min-width: 768px) { */
+/* .Main {
+		flex-direction: row;
+		width: calc(100% - 15%);
+	} */
+/* .backgroundImage {
+		display: block;
+	} */
+/* } */
+/* @media (min-width: 1024px) { */
+/* .Main {
+		width: 70%;
+		width: calc(100% - 15%);
+	} */
+/* } */

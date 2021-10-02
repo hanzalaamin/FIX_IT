@@ -1,0 +1,79 @@
+/* .Login {
+	padding: 10px;
+	width: 30rem;
+	margin: 60px auto;
+	box-shadow: 0 0 10px 5px lightgray;
+	background-color: #80a8cc42;
+	background-color: white;
+	min-height: 100vh;
+	font-family: "Montserrat", sans-serif;
+	background-color: #f6f9fb;
+}
+.Main {
+	padding: 2rem 0;
+	width: 90%;
+	margin: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+	flex-shrink: 100%;
+}
+.Image {
+	background-image: url("../../assets//images//01.jpg");
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	min-height: 100vh;
+}
+.Heading {
+	font-size: 2.8rem;
+}
+.formGroup {
+	position: relative;
+}
+.icon {
+	position: absolute;
+	right: 1rem;
+	top: 0;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+.icon i {
+	color: gray;
+}
+.input {
+	font-weight: 200;
+	padding: 0.8rem 1rem;
+	height: calc(3.75038rem + 2px);
+	border-radius: 0.6rem;
+	height: 80px;
+	color: red;
+}
+.input:focus {
+	box-shadow: none;
+}
+.Button {
+	background-color: #2787f5d3;
+	padding: 0.8rem 0;
+	color: white;
+	border-radius: 0.6rem;
+}
+.Button:hover {
+	color: white;
+	background-color: #2787f5;
+}
+.Button:focus {
+	box-shadow: none;
+}
+.Footer {
+	font-family: "Roboto", sans-serif;
+	font-weight: 500;
+	font-size: 1.125rem;
+}
+.Login a {
+	text-decoration: none;
+} */

@@ -1,0 +1,16 @@
+.NavbarItems {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	font-family: "Montserrat", sans-serif;
+}
+
+@media (min-width: 768px) {
+	.NavbarItems {
+		justify-content: flex-end;
+		flex-flow: row;
+	}
+}
