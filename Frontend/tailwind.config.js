@@ -10,6 +10,10 @@ module.exports = {
 			},
 		},
 		right: { "1/12": "15%" },
+		boxShadow: {
+			// mainShadow: "0 0 5px 1px #eaeaea",
+			mainShadow: "0px 0px 5px 1px rgba(0, 0, 0, 0.06), 0px 0px 5px 1px rgba(0, 0, 0, 0.06)",
+		},
 	},
 	variants: {
 		extend: {

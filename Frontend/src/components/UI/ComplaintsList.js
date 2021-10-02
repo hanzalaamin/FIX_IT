@@ -47,7 +47,7 @@ const ComplaintsList = (props) => {
 	};
 
 	return (
-		<div className="w-full border shadow border-gray-200 p-4 mb-4 rounded-lg hover:shadow-lg">
+		<div className="w-full border shadow-mainShadow border-gray-200 p-4 mb-4 rounded-lg hover:shadow-lg">
 			<div className="flex">
 				<img src="" className="w-12 h-12 rounded-full" alt="" />
 				<div className="w-full ml-4">
@@ -83,7 +83,7 @@ const ComplaintsList = (props) => {
 							</button>
 							<div
 								className={
-									"absolute top-9 right-4 bg-white rounded-lg border shadow w-44 " +
+									"absolute top-9 right-4 bg-white rounded-lg border shadow-mainShadow w-44 " +
 									(menu ? "block" : "hidden")
 								}
 							>
@@ -113,7 +113,7 @@ const ComplaintsList = (props) => {
 					</div>
 				</div>
 			</div>
-			<div className="mt-2 ">
+			<div className="mt-2">
 				{/* Title */}
 				<p className="text-base font-medium pb-2 text-gray-800">
 					<span className="font-semibold">Title : </span>
@@ -129,45 +129,68 @@ const ComplaintsList = (props) => {
 					<span className="font-semibold">Area : </span>
 					{props.sector}
 				</p>
-				<p className="break-all text-base font-medium border-b pb-2 text-gray-800">
+				<p className="break-all text-base font-medium pb-0 text-gray-800">
 					<span className="font-semibold">Description : </span>
 					{props.description}
 				</p>
 			</div>
-			<div className="mt-2">
-				<div className="flex justify-center items-center">
+			<div className="">
+				<div className="border-b flex items-center justify-between p-1">
+					<p className="font-semibold text-sm w-full">votes&nbsp;{props.noOfVotes}</p>
+					<p className="font-semibold text-sm w-full text-right">
+						comments&nbsp;{props.noOfComments}
+					</p>
+				</div>
+				<div className="flex justify-center items-center mt-1">
 					{/* Like Section */}
 					{props.likesID.includes(user._id) ? (
 						<button
 							onClick={() => disLike(props.comp_id)}
-							className="w-1/2 border-r flex justify-center items-center cursor-pointer text-blue-600"
+							className="w-1/2 border-r flex justify-center cursor-pointer"
 						>
-							<div>
+							<div className="transform scale-150 text-blue-600">
+								<svg
+									baseProfile="tiny"
+									height="24px"
+									version="1.2"
+									viewBox="0 0 24 24"
+									fill="currentColor"
+									width="24px"
+									xmlSpace="preserve"
+									xmlns="http://www.w3.org/2000/svg"
+									xmlnsXlink="http://www.w3.org/1999/xlink"
+								>
+									<g id="Layer_1">
+										<path d="M13,5.586l-4.707,4.707c-0.391,0.391-0.391,1.023,0,1.414s1.023,0.391,1.414,0L12,9.414V17c0,0.552,0.447,1,1,1   s1-0.448,1-1V9.414l2.293,2.293C16.488,11.902,16.744,12,17,12s0.512-0.098,0.707-0.293c0.391-0.391,0.391-1.023,0-1.414L13,5.586z" />
+									</g>
+								</svg>
+							</div>
+							{/* <div>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
-									width="20"
-									height="20"
+									width="24"
+									height="24"
 									viewBox="0 0 24 24"
-									fill="none"
+									fill="rgb(37, 99, 235)"
 									stroke="currentColor"
-									strokeWidth="1.8"
+									strokeWidth="2"
 									strokeLinecap="round"
 									strokeLinejoin="round"
 									className="feather feather-thumbs-up"
 								>
 									<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
 								</svg>
-							</div>
-							<div>
-								<span className="ml-1 font-medium text-base">{props.noOfVotes}</span>
-							</div>
+							</div> */}
+							{/* <div>
+								<span className="ml-1 font-base text-lg text-black">{props.noOfVotes}</span>
+							</div> */}
 						</button>
 					) : (
 						<button
 							onClick={() => like(props.comp_id)}
-							className="w-1/2 border-r flex justify-center items-center cursor-pointer text-gray-500"
+							className="w-1/2 border-r flex justify-center items-cente cursor-pointer text-gray-500"
 						>
-							<div>
+							{/* <div>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									width="20"
@@ -182,10 +205,27 @@ const ComplaintsList = (props) => {
 								>
 									<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
 								</svg>
+							</div> */}
+							<div className="transform scale-150">
+								<svg
+									baseProfile="tiny"
+									height="24px"
+									version="1.2"
+									viewBox="0 0 24 24"
+									fill="currentColor"
+									width="24px"
+									xmlSpace="preserve"
+									xmlns="http://www.w3.org/2000/svg"
+									xmlnsXlink="http://www.w3.org/1999/xlink"
+								>
+									<g id="Layer_1">
+										<path d="M13,5.586l-4.707,4.707c-0.391,0.391-0.391,1.023,0,1.414s1.023,0.391,1.414,0L12,9.414V17c0,0.552,0.447,1,1,1   s1-0.448,1-1V9.414l2.293,2.293C16.488,11.902,16.744,12,17,12s0.512-0.098,0.707-0.293c0.391-0.391,0.391-1.023,0-1.414L13,5.586z" />
+									</g>
+								</svg>
 							</div>
-							<div>
-								<span className="ml-1 font-medium text-base">{props.noOfVotes}</span>
-							</div>
+							{/* <div>
+								<span className="ml-1 font-base text-lg">{props.noOfVotes}</span>
+							</div> */}
 						</button>
 					)}
 
@@ -195,25 +235,25 @@ const ComplaintsList = (props) => {
 						onClick={openCommentBox}
 					>
 						<button>
-							{/* <svg
-															xmlns="http://www.w3.org/2000/svg"
-															width="20"
-															height="20"
-															viewBox="0 0 24 24"
-															fill="none"
-															stroke="currentColor"
-															strokeWidth="1.8"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-															className="feather feather-message-circle"
-														>
-															<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-														</svg> */}
-							<span className="font-medium text-base">Comments</span>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="2.1"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								className="feather feather-message-circle"
+							>
+								<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+							</svg>
+							{/* <span className="font-medium text-base">Comments</span> */}
 						</button>
-						<div>
+						{/* <div>
 							<span className="ml-1 font-medium text-base">{props.noOfComments}</span>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>

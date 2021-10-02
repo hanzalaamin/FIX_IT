@@ -394,7 +394,7 @@ const Home = () => {
 					{/* Trends */}
 					<div className="lg:w-1/3 order-1 lg:order-2 h-full">
 						<div className="pt-10 px-16 px:12 flex justify-center">
-							<div className="border w-full h-full rounded-lg shadow">
+							<div className="border w-full h-full rounded-lg shadow-mainShadow">
 								<h1 className="text-gray-800 text-md font-bold p-3 border-b border-dim-200">
 									What’s happening
 								</h1>
